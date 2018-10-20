@@ -23,20 +23,22 @@ class ApplicationController {
   private $registerController;
   private $forumController;
 
-  public function __construct(\lib\SessionStorage $storage,
+  public function __construct(\lib\SessionStorage $sessionStorage,
       \Login\model\IAccountRegisterDAO $register,
       \Login\model\IForumDAO $forum) {
-    
-    $account = $storage->loadEntry(\Login\ENV::$sessionCurrentUserId);
-    $this->createViews($storage, $account);
-    $this->createControllers($storage, $register, $forum, $account);
+    $account = $sessionStorage->loadEntry(\Login\ENV::SESSION_CURRENT_USER_ID);
+    $this->createViews($sessionStorage, $account);
+    $this->createControllers($sessionStorage, $register, $forum, $account);
   }
 
   public function run() {
     try {
-      if ($this->layoutView->userWantsToRegister()) $this->registerController->doRegister();
-      else if ($this->layoutView->userWantsToViewForum()) $this->forumController->doForumInteractions();
-      else $this->loginController->doLogin();
+      if ($this->layoutView->userWantsToRegister())
+        $this->registerController->doRegister();
+      else if ($this->layoutView->userWantsToViewForum())
+        $this->forumController->doForumInteractions();
+      else
+        $this->loginController->doLogin();
     
     } catch (Exception $err) {
       $this->layoutView->serverFailure();

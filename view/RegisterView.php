@@ -50,23 +50,41 @@ class RegisterView extends ViewTemplate {
 		return '
 		<h2>Register new user</h2>
 		<form action="?' . $this->getRegisterLink() . '" method="post" enctype="multipart/form-data">
-			<fieldset>
-			<legend>Register a new user - Write username and password</legend>
-				<p id="' . self::$messageId . '">' . $this->getDisplayMessage() . '</p>
-				<label for="' . self::$username . '" >Username :</label>
-				<input type="text" size="20" name="' . self::$username . '" id="' . self::$username . '" value="' . $this->getStoredUsername() . '" />
-				<br/>
-				<label for="' . self::$password . '" >Password  :</label>
-				<input type="password" size="20" name="' . self::$password . '" id="' . self::$password . '" value="" />
-				<br/>
-				<label for="' . self::$passwordRepeat . '" >Repeat password  :</label>
-				<input type="password" size="20" name="' . self::$passwordRepeat . '" id="' . self::$passwordRepeat . '" value="" />
-				<br/>
-				<input id="submit" type="submit" name="' . self::$register . '"  value="Register" />
-				<br/>
-			</fieldset>
+		<fieldset>
+		<legend>Register a new user - Write username and password</legend>
+			<p id="' . self::$messageId . '">' . $this->getDisplayMessage() . '</p>
+			<label for="' . self::$username . '" >Username :</label>
+			<input type="text" size="20" name="' . self::$username . '" id="' . self::$username . '" value="' . $this->getStoredUsername() . '" />
+			<br/>
+			<label for="' . self::$password . '" >Password  :</label>
+			<input type="password" size="20" name="' . self::$password . '" id="' . self::$password . '" value="" />
+			<br/>
+			<label for="' . self::$passwordRepeat . '" >Repeat password  :</label>
+			<input type="password" size="20" name="' . self::$passwordRepeat . '" id="' . self::$passwordRepeat . '" value="" />
+			<br/>
+			<input id="submit" type="submit" name="' . self::$register . '"  value="Register" />
+			<br/>
+		</fieldset>
 		</form>
 	';
+	}
+
+	private function areRegistrationFieldsSet() : bool {
+		return isset($_POST[self::$username]) && isset($_POST[self::$password]) && isset($_POST[self::$passwordRepeat]);
+	}
+
+	private function assertMatchingPasswordInputs() : bool {
+		if (!$this->hasMatchingPasswordInput())
+			throw new PasswordsDoNotMatchException();
+		else
+			return true;
+	}
+
+	private function hasMatchingPasswordInput() : bool {
+		$password = $_POST[self::$password];
+		$passwordRepeat = $_POST[self::$passwordRepeat];
+
+		return $password === $passwordRepeat;
 	}
 
 	private function saveUsername() {
@@ -94,23 +112,6 @@ class RegisterView extends ViewTemplate {
 		die(); // This destroys the call stack.
 	}
 
-	private function assertMatchingPasswordInputs() : bool {
-		if (!$this->hasMatchingPasswordInput())
-			throw new PasswordsDoNotMatchException();
-		else return true;
-	}
-
-	private function hasMatchingPasswordInput() : bool {
-		$password = $_POST[self::$password];
-		$passwordRepeat = $_POST[self::$passwordRepeat];
-
-		return $password === $passwordRepeat;
-	}
-
-	private function areRegistrationFieldsSet() : bool {
-		return isset($_POST[self::$username]) && isset($_POST[self::$password]) && isset($_POST[self::$passwordRepeat]);
-	}
-
 	private function getProblems() : array {
 		// Todo: consider alternatives such as non-throwing boolean-based checks
 		$errors = array();
@@ -122,33 +123,37 @@ class RegisterView extends ViewTemplate {
 
 		return $errors;
 	}
+
 	private function getProblemsString(array $problems) : string {
 		return array_reduce($this->getErrorStringList($problems), function ($a, $b) { return $a . $b; }, "");
 	}
+
 	private function getErrorStringList(array $errList) : array {
 		$errorStringArray = array();
 		foreach ($errList as $err) {
 			$errorStringArray[] = $this->interpretException($err);
 		}
+		
 		return array_unique($errorStringArray);
 	}
 
 	private function interpretException(\Exception $err) : string {
+		$usernameMinLength = \Login\model\Username::USERNAME_MIN_LENGTH;
+		$passwordMinLength = \Login\model\Password::PASSWORD_MIN_LENGTH;
+
 		switch (true) {
 			case $err instanceof \Login\model\AccountAlreadyExistsException:
 				return "User exists, pick another username.<br>";
 			case $err instanceof \Login\model\UsernameTooShortException:
-				return "Username has too few characters, at least " . \Login\model\Username::USERNAME_MIN_LENGTH . " characters.<br>";
+				return "Username has too few characters, at least " . $usernameMinLength . " characters.<br>";
 			case $err instanceof \Login\model\UsernameContainsInvalidCharactersException:
 				return "Username contains invalid characters.<br>";
 			case $err instanceof \Login\model\PasswordTooShortException:
-				return "Password has too few characters, at least " . \Login\model\Password::PASSWORD_MIN_LENGTH . " characters.<br>";
+				return "Password has too few characters, at least " . $passwordMinLength . " characters.<br>";
 			case $err instanceof \Login\view\PasswordsDoNotMatchException:
 				return "Passwords do not match.<br>";
 			default:
 			  return "Unknown error.<br>";
 		}
-
-		return "";
 	}
 }

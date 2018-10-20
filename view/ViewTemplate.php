@@ -112,7 +112,7 @@ abstract class ViewTemplate {
   }
 
   protected function clearLocals() {
-    $this->session->deleteEntry(\Login\ENV::$sessionLocalsId);
+    $this->session->deleteEntry(\Login\ENV::SESSION_LOCALS_ID);
   }
 
   // Persistent Messages
@@ -147,11 +147,11 @@ abstract class ViewTemplate {
    * This will SET (read: overwrite) the currently stored locals for the session.
    */
   private function setLocals(array $locals) {
-    $this->session->saveEntry(\Login\ENV::$sessionLocalsId, $locals);
+    $this->session->saveEntry(\Login\ENV::SESSION_LOCALS_ID, $locals);
   }
 
   private function getLocals() : array {
-    $locals = $this->session->loadEntry(\Login\ENV::$sessionLocalsId);
+    $locals = $this->session->loadEntry(\Login\ENV::SESSION_LOCALS_ID);
     if (isset($locals)) return $locals;
     
     return array();

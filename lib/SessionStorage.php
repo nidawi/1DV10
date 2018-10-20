@@ -8,8 +8,7 @@ class SessionStorage {
   
   private $sessionKey = "PHP_SESSION";
 
-  public function __construct(string $appId = null)
-  {
+  public function __construct(string $appId = null) {
     if (isset($appId))
       $this->sessionKey = $appId;
   }
@@ -26,9 +25,10 @@ class SessionStorage {
    * If no entry was found, null will be returned.
    */
   public function loadEntry(string $id) {
-    if ($this->exists($id)) {
+    if ($this->exists($id))
       return $_SESSION[$id . $this->getSessionKey($id)];
-    } else return NULL;
+    else
+      return null;
   }
 
   /**

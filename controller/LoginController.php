@@ -54,11 +54,11 @@ class LoginController {
   }
 
   private function setLoggedInAccount(\Login\Model\Account $account) {
-    $this->session->saveEntry(\Login\ENV::$sessionCurrentUserId, $account);
+    $this->session->saveEntry(\Login\ENV::SESSION_CURRENT_USER_ID, $account);
   }
 
   private function unsetLoggedInAccount() {
     unset($this->currentAccount);
-    $this->session->deleteEntry(\Login\ENV::$sessionCurrentUserId);
+    $this->session->deleteEntry(\Login\ENV::SESSION_CURRENT_USER_ID);
   }
 }
