@@ -7,6 +7,8 @@ require_once 'view/ViewTemplate.php';
 require_once 'view/TopMenuView.php';
 require_once 'view/LayoutView.php';
 
+// I wanted to make the Login into its own module as well, but sadly I didn't have time.
+// I kind of crammed everything login-related into the Login-namespace.
 require_once 'LoginController.php';
 require_once 'modules/Registration/controller/RegisterController.php';
 require_once 'modules/Forum/controller/ForumController.php';

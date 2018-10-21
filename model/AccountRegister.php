@@ -36,12 +36,14 @@ class AccountRegister implements AccountRegisterDAO, AccountInfo {
   }
 
   public function createAccount(\Login\model\Username $username, \Login\model\Password $password) {
-    // This design ensures that resources are not spent on asking the database for username availability if the input is incorrect to begin with.
-    // All business rules (see Username.php and Password.php) have to be satisfied before any database calls are made.
+    // This design ensures that resources are not spent on asking the database
+    // for username availability if the input is incorrect to begin with. All business rules
+    // (see Username.php and Password.php) have to be satisfied before any database calls are made.
     if ($this->isAccountCreated($username->getUsername()))
       throw new AccountAlreadyExistsException();
     
-      $this->database->query('insert into ' . self::$accountsTableName . ' (username, password) values (?, ?)', array($username->getUsername(), password_hash($password->getPassword(), PASSWORD_BCRYPT)));
+      $argsArr = array($username->getUsername(), password_hash($password->getPassword(), PASSWORD_BCRYPT));
+      $this->database->query('insert into ' . self::$accountsTableName . ' (username, password) values (?, ?)', $argsArr);
   }
 
   /**
@@ -152,12 +154,13 @@ class AccountRegister implements AccountRegisterDAO, AccountInfo {
     $createdAt = strtotime($rawAccount["createdat"]);
     $updatedAt = strtotime($rawAccount["updatedat"]);
     $id = $rawAccount["id"];
+    $type = $rawAccount["type"];
     $tempPassword = null;
 
     try { $tempPassword = $this->passwordRegister->getTemporaryPassword($id); }
     catch (\Exception $err) {}
 
-    return new Account($rawAccount["username"], $rawAccount["password"], $id, $rawAccount["type"], $createdAt, $updatedAt, $tempPassword);
+    return new Account($rawAccount["username"], $rawAccount["password"], $id, $type, $createdAt, $updatedAt, $tempPassword);
   }
 
   /**

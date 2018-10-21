@@ -96,7 +96,8 @@ class NewThreadView extends \Login\view\ViewTemplate {
     $threadBody = $this->getLocal(self::$threadBodyLocal);
 
     return '
-    <form action="?' . $this->forumLayoutView->getThreadPath() . '" method="POST" enctype="multipart/form-data" id="' . self::$formId . '">
+    <form action="?' . $this->forumLayoutView->getThreadPath() . '"
+      method="POST" enctype="multipart/form-data" id="' . self::$formId . '">
       <fieldset>
       <p id="' . self::$messageId . '">' . $this->getDisplayMessage() . '</p>
       <label for="' . self::$threadTitle . '" >Title :</label>

@@ -19,7 +19,9 @@ class TemporaryPasswordRegister {
    */
   public function createTemporaryPassword(Account $account) {
     $generatedPassword = TemporaryPassword::generateTemporaryPassword();
-    $this->database->query('insert into ' . self::$temporaryPasswordsTableName . ' (password, owner) values (?, ?)', array($generatedPassword, $account->getId()));
+
+    $argsArr = array($generatedPassword, $account->getId());
+    $this->database->query('insert into ' . self::$temporaryPasswordsTableName . ' (password, owner) values (?, ?)', $argsArr);
   }
 
   /**

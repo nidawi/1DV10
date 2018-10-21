@@ -130,17 +130,28 @@ class LayoutView extends ViewTemplate {
   }
 
   private function generateRegisterLink() : string {
-    $registerLink = ($this->userWantsToViewRegistration()) ? '<a href="?">Back to login</a>' : ($this->accountManager->isLoggedIn() ? '' : '<a href="?' . $this->getRegisterLink() . '">Register a new user</a>');
+    $registerLink = ($this->userWantsToViewRegistration())
+      ? '<a href="?">Back to login</a>'
+      : ($this->accountManager->isLoggedIn()
+        ? ''
+        : '<a href="?' . $this->getRegisterLink() . '">Register a new user</a>');
+
+
     return strlen($registerLink) > 0 ? $this->addListTags($registerLink) : '';
   }
 
   private function generateForumLink() : string {
-    $forumLink = $this->userWantsToViewForum() ? '<a href="?">Go back</a>' : '<a href="?' . $this->getForumLink() . '">Go to Forum</a>';
+    $forumLink = $this->userWantsToViewForum()
+      ? '<a href="?">Go back</a>'
+      : '<a href="?' . $this->getForumLink() . '">Go to Forum</a>';
+
     return $this->addListTags($forumLink);
   }
 
   private function generateLoginStatus() : string {
-    return $this->accountManager->isLoggedIn() ? '<h2>Logged in</h2>' : '<h2>Not logged in</h2>';
+    return $this->accountManager->isLoggedIn()
+      ? '<h2>Logged in</h2>'
+      : '<h2>Not logged in</h2>';
   }
 
   private function appendFooter() : string {

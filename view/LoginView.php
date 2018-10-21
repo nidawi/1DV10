@@ -112,7 +112,9 @@ class LoginView extends ViewTemplate {
     return isset($_POST[self::$keep]) ? ($_POST[self::$keep] === "on") : false;
   }
   private function areCredentialsSet() : bool {
-    return isset($_POST[self::$name]) && strlen($_POST[self::$name]) > 0 && isset($_POST[self::$password]) && strlen($_POST[self::$password]) > 0;
+    $nameSet = isset($_POST[self::$name]) && strlen($_POST[self::$name]) > 0;
+    $passwordSet = isset($_POST[self::$password]) && strlen($_POST[self::$password]) > 0;
+    return $nameSet && $passwordSet;
   }
 
   private function saveState() {

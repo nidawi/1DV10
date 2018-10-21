@@ -119,7 +119,8 @@ class ThreadView extends \Login\view\ViewTemplate {
   }
 
   private function generateThreadToolsMenuHTML() : string {
-    if ($this->accountManager->isLoggedIn() && $this->threadToDisplay->canAccountEditThread($this->accountManager->getLoggedInAccount())) {
+    $loggedIn = $this->accountManager->isLoggedIn();
+    if ($loggedIn && $this->threadToDisplay->canAccountEditThread($this->accountManager->getLoggedInAccount())) {
       return '
         <form class="postToolBox" action="?' . $this->getThreadLink() . '" method="post" enctype="multipart/form-data">
           <input type="submit" value="Edit" name="' . self::$threadEdit .'">
