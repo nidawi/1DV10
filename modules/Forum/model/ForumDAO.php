@@ -2,7 +2,7 @@
 
 namespace Forum\model;
 
-interface IForumDAO {
+interface ForumDAO {
 
   public function createThread(Thread $thread, Post $body, \Login\model\Account $poster);
   public function createPost(Post $post, Thread $thread, \Login\model\Account $poster);

@@ -6,7 +6,6 @@ class Thread {
 
   const TITLE_MIN_LENGTH = 2;
   const TITLE_MAX_LENGTH = 100;
-  const POSTS_MAX_COUNT = 100;
 
   private $title;
   private $id;

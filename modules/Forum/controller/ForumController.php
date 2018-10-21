@@ -22,7 +22,7 @@ class ForumController {
 
   public function __construct(\Login\view\LayoutView $lv,
       \lib\SessionStorage $session,
-      \Forum\model\IForumDAO $forum,
+      \Forum\model\ForumDAO $forum,
       \Login\model\AccountManager $accountManager) {
     $this->forum = $forum;
     $this->accountManager = $accountManager;

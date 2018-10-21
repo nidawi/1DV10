@@ -25,7 +25,7 @@ class ApplicationController {
 
   public function __construct(\lib\SessionStorage $sessionStorage,
       \Login\model\IAccountRegisterDAO $register,
-      \Forum\model\IForumDAO $forum,
+      \Forum\model\ForumDAO $forum,
       \Login\model\AccountManager $accountManager) {
     $this->createViews($sessionStorage, $accountManager);
     $this->createControllers($sessionStorage, $register, $forum, $accountManager);
@@ -55,7 +55,7 @@ class ApplicationController {
 
   private function createControllers(\lib\SessionStorage $storage,
       \Login\model\IAccountRegisterDAO $register,
-      \Forum\model\IForumDAO $forum,
+      \Forum\model\ForumDAO $forum,
       \Login\model\AccountManager $accountManager) {
     $this->loginController = new \Login\controller\LoginController($this->layoutView, $register, $accountManager, $storage);
     $this->registerController = new \Login\controller\RegisterController($this->layoutView, $register, $storage);

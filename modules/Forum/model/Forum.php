@@ -3,13 +3,13 @@
 namespace Forum\model;
 
 require_once 'ForumExceptions.php';
-require_once 'IForumDAO.php';
+require_once 'ForumDAO.php';
 require_once 'Thread.php';
 require_once 'Post.php';
 
 // This is a forum facade controller
 // This facade controller can be substituted for another implementation.
-class Forum implements IForumDAO {
+class Forum implements ForumDAO {
 
   private $database;
   private $register;

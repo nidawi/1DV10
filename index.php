@@ -1,20 +1,5 @@
 <?php
 
-/*
- * I feel that I need to make a bit of a comment here.
- * I am aware of that you want us to use $_SESSION only inside the model.
- * However, since I use the PRG-pattern to prevent duplicate POST requests, etc.,
- * I needed a way to store display messages and "pre-filled" values for input boxes, etc.
- * Because of this, my views depend on the session (lib/SessionStorage.php) for storing what
- * I call "locals". These "locals" are the same as Node's Express' "locals" which are essentially
- * values that are stored in the session in order to be preserved after a redirect.
- * The use of the session has been abstracted in view/ViewTemplate.php.
- * 
- * This is motivated by the fact that the model, to my understanding, has absolutely nothing
- * to do with the view being able to store values such as this. All "magic indices" are stored
- * in the environments file to prevent hidden dependencies.
- */
-
 // Load Base
 require_once __DIR__ . '/ENV.php';
 require_once 'config/Settings.php';
