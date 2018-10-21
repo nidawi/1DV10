@@ -15,8 +15,8 @@ abstract class ViewTemplate {
   private static $usernameLocalId = "USERNAME";
   private static $displayMessageLocalId = "MESSAGE";
 
-  public function __construct(\lib\SessionStorage $session) {
-    $this->session = $session;
+  public function __construct(\lib\SessionStorage $sessionStorage) {
+    $this->session = $sessionStorage;
   }
 
   public function userWantsToViewRegistration() : bool {

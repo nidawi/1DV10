@@ -20,7 +20,8 @@ class RegisterController {
   }
 
   /**
-   * Deals with registration requests and delegates work to the appropriate handlers.
+   * This will automatically receive requests from the related view
+   * and delegate them to the appropriate handler.
    */
   public function doRegister() {
     if ($this->registerView->userWantsToRegisterNewAccount())

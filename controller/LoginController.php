@@ -15,15 +15,16 @@ class LoginController {
   public function __construct(\Login\view\LayoutView $lv,
       \Login\model\AccountInfo $register,
       \Login\model\AccountManager $accountManager,
-      \lib\SessionStorage $session) {
+      \lib\SessionStorage $sessionStorage) {
     $this->layoutView = $lv;
     $this->accountRegister = $register;
     $this->accountManager = $accountManager;
-    $this->loginView = new \Login\view\LoginView($accountManager, $session);
+    $this->loginView = new \Login\view\LoginView($accountManager, $sessionStorage);
   }
 
   /**
-   * Deals with login requests and delegates work to the appropriate handlers.
+   * This will automatically receive requests from the related view
+   * and delegate them to the appropriate handler.
    */
   public function doLogin() {
     // Perform a login sequence, taking whatever credentials are provided by the view.

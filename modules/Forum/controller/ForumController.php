@@ -2,12 +2,12 @@
 
 namespace Forum\controller;
 
-require_once __DIR__ . '/../view/ViewExceptions.php';
-require_once __DIR__ . '/../view/ForumLayout.php';
-require_once __DIR__ . '/../view/ForumView.php';
-require_once __DIR__ . '/../view/PostView.php';
-require_once __DIR__ . '/../view/ThreadView.php';
-require_once __DIR__ . '/../view/NewThreadView.php';
+require_once 'modules/Forum/view/ViewExceptions.php';
+require_once 'modules/Forum/view/ForumLayout.php';
+require_once 'modules/Forum/view/ForumView.php';
+require_once 'modules/Forum/view/PostView.php';
+require_once 'modules/Forum/view/ThreadView.php';
+require_once 'modules/Forum/view/NewThreadView.php';
 
 class ForumController {
 
@@ -22,22 +22,23 @@ class ForumController {
   private $newThreadView;
 
   public function __construct(\Login\view\LayoutView $lv,
-      \lib\SessionStorage $session,
+      \lib\SessionStorage $sessionStorage,
       \Forum\model\ForumDAO $forum,
       \Login\model\AccountManager $accountManager) {
     $this->forum = $forum;
     $this->accountManager = $accountManager;
 
     $this->layoutView = $lv;
-    $this->forumLayoutView = new \Forum\view\ForumLayout($session, $accountManager);
-    $this->forumView = new \Forum\view\ForumView($this->forumLayoutView, $session);
-    $this->threadView = new \Forum\view\ThreadView($this->forumLayoutView, $session, $accountManager);
-    $this->postView = new \Forum\view\PostView($this->forumLayoutView, $session, $accountManager);
-    $this->newThreadView = new \Forum\view\NewThreadView($this->forumLayoutView, $session);
+    $this->forumLayoutView = new \Forum\view\ForumLayout($sessionStorage, $accountManager);
+    $this->forumView = new \Forum\view\ForumView($this->forumLayoutView, $sessionStorage);
+    $this->threadView = new \Forum\view\ThreadView($this->forumLayoutView, $sessionStorage, $accountManager);
+    $this->postView = new \Forum\view\PostView($this->forumLayoutView, $sessionStorage, $accountManager);
+    $this->newThreadView = new \Forum\view\NewThreadView($this->forumLayoutView, $sessionStorage);
   }
 
   /**
-   * Deals with forum-related requests and delegates work to the appropriate handler.
+   * This will automatically receive requests from the related views
+   * and delegate them to the appropriate handler.
    */
   public function doForumInteractions() {
     if ($this->newThreadView->userWantsToViewThreadCreation())

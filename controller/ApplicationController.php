@@ -28,7 +28,8 @@ class ApplicationController {
   }
 
   /**
-   * Runs the application. This will automatically receive requests and delegate them to the appropriate controller.
+   * Runs the application. This will automatically receive requests from the related views
+   * and delegate them to the appropriate controller.
    */
   public function run() {
     try {
