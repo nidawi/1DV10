@@ -37,8 +37,7 @@ class ForumController {
   }
 
   /**
-   * Interacts with the forum.
-   * This method will automatically delegate the request to the appropriate handler.
+   * Deals with forum-related requests and delegates work to the appropriate handler.
    */
   public function doForumInteractions() {
     if ($this->newThreadView->userWantsToViewThreadCreation())

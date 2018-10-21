@@ -5,7 +5,7 @@ namespace Login\model;
 /**
  * This interface provides a simplified access point to an AccountRegister.
  */
-interface IAccountInfo {
+interface AccountInfo {
 
   function isAccountCreated(string $username) : bool;
 

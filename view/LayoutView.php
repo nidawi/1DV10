@@ -101,11 +101,11 @@ class LayoutView extends ViewTemplate {
   }
 
   private function generateTitle() : string {
-    return 'Assignment 2 - ' . (($this->userWantsToRegister()) ? 'Register' : 'Home');
+    return 'Assignment 2 - ' . (($this->userWantsToViewRegistration()) ? 'Register' : 'Home');
   }
 
   private function generateRegisterLink() : string {
-    $registerLink = ($this->userWantsToRegister()) ? '<a href="?">Back to login</a>' : ($this->accountManager->isLoggedIn() ? '' : '<a href="?' . $this->getRegisterLink() . '">Register a new user</a>');
+    $registerLink = ($this->userWantsToViewRegistration()) ? '<a href="?">Back to login</a>' : ($this->accountManager->isLoggedIn() ? '' : '<a href="?' . $this->getRegisterLink() . '">Register a new user</a>');
     return strlen($registerLink) > 0 ? $this->addListTags($registerLink) : '';
   }
 

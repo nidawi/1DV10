@@ -4,13 +4,14 @@ namespace Login\controller;
 
 class LoginController {
   
-  private $layoutView;
-  private $loginView;
   private $accountManager;
   private $accountRegister;
 
+  private $layoutView;
+  private $loginView;
+
   public function __construct(\Login\view\LayoutView $lv,
-      \Login\model\IAccountInfo $register,
+      \Login\model\AccountInfo $register,
       \Login\model\AccountManager $accountManager,
       \lib\SessionStorage $session) {
     $this->layoutView = $lv;
@@ -19,6 +20,9 @@ class LoginController {
     $this->loginView = new \Login\view\LoginView($accountManager, $session);
   }
 
+  /**
+   * Deals with login requests and delegates work to the appropriate handlers.
+   */
   public function doLogin() {
     // Perform a login sequence, taking whatever credentials are provided by the view.
     if ($this->loginView->userWantsToLogin() && !$this->accountManager->isLoggedIn())

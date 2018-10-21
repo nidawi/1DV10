@@ -8,7 +8,6 @@ require_once 'lib/Database.php';
 require_once 'lib/SessionManager.php';
 require_once 'lib/Cookie.php';
 
-
 require_once 'model/IAccountInfo.php';
 require_once 'model/IAccountRegisterDAO.php';
 require_once 'model/ModelExceptions.php';

@@ -10,13 +10,17 @@ class RegisterController {
   private $accountRegister;
 
   public function __construct(\Login\view\LayoutView $lv,
-      \Login\model\IAccountRegisterDAO $register,
+      \Login\model\AccountRegisterDAO $register,
       \lib\SessionStorage $session) {
     $this->layoutView = $lv;
     $this->registerView = new \Login\view\RegisterView($session);
     $this->accountRegister = $register;
   }
 
+  /**
+   * Deals with registration requests and delegates
+   * work to the appropriate handlers.
+   */
   public function doRegister() {
     if ($this->registerView->userWantsToRegisterNewAccount())
       $this->attemptRegistration();

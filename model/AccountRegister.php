@@ -3,14 +3,14 @@
 namespace Login\model;
 
 require_once 'TemporaryPasswordRegister.php';
-require_once 'IAccountRegisterDAO.php';
-require_once 'IAccountInfo.php';
+require_once 'AccountRegisterDAO.php';
+require_once 'AccountInfo.php';
 
 /**
  * Is responsible for account management.
  * Can be substituted for an altnerative implementation.
  */
-class AccountRegister implements IAccountRegisterDAO, IAccountInfo {
+class AccountRegister implements AccountRegisterDAO, AccountInfo {
 
   private $database;
   private $passwordRegister;
@@ -22,7 +22,10 @@ class AccountRegister implements IAccountRegisterDAO, IAccountInfo {
     $this->passwordRegister = new TemporaryPasswordRegister($database);
   }
 
-  // This should be done with Id in the future.
+  /**
+   * Checks whether an account with the provided username exists.
+   * @todo Implement another one of these that checks the Id instead.
+   */
   public function isAccountCreated(string $username) : bool {
     try {
       $this->getAccountByUsername($username);
@@ -32,6 +35,11 @@ class AccountRegister implements IAccountRegisterDAO, IAccountInfo {
     }
   }
 
+  /**
+   * Attempts to create an account with the provided username and password.
+   * 
+   * @throws AccountAlreadyExistsException
+   */
   public function createAccount(\Login\model\Username $username, \Login\model\Password $password) {
     // This design ensures that resources are not spent on asking the database for username availability if the input is incorrect to begin with.
     // All business rules (see Username.php and Password.php) have to be satisfied before any database calls are made.
@@ -62,10 +70,26 @@ class AccountRegister implements IAccountRegisterDAO, IAccountInfo {
     }
   }
 
+  /**
+   * Deletes the given account.
+   * @todo Implement this.
+   * @throws NotImplementedException
+   */
   public function deleteAccount(Account $account) {
     throw new NotImplementedException();
   }
 
+  /**
+   * Takes the provided credentials and attempts to authenticate an associated account.
+   * Returns the account if the operation is successful.
+   * 
+   * This will verify the provided password and compare it to the account's password
+   * as well as the temporary password (if there is one).
+   * A temporary password will be created for the user if they wish to be remembered.
+   * Lastly, the account will have its "updatedat" variable updated.
+   * 
+   * @throws InvalidCredentialsException
+   */
   public function getAccountByCredentials(AccountCredentials $credentials) : Account {
     $account = $this->getAccountByUsername($credentials->getUsername());
 
@@ -79,17 +103,29 @@ class AccountRegister implements IAccountRegisterDAO, IAccountInfo {
       throw new InvalidCredentialsException();
   }
 
+  /**
+   * Attempts to fetch and return an account with the provided username.
+   * 
+   * @throws InternalFailureException
+   * @throws AccountDoesNotExistException
+   */
   public function getAccountByUsername(string $username) : Account {
     $accountMatches = $this->database->query('select * from ' . self::$accountsTableName . ' where binary username=?', array($username));
     
     if (!isset($accountMatches) || count($accountMatches) > 1)
-      throw new \Exception();
+      throw new InternalFailureException();
     else if (count($accountMatches) < 1)
       throw new AccountDoesNotExistException();
 
       return $this->getAccountInstance($accountMatches[0]);
   }
 
+  /**
+   * Attempts to fetch and return an account with the provided Id.
+   * 
+   * @throws InternalFailureException
+   * @throws AccountDoesNotExistException
+   */
   public function getAccountById(string $id) : Account {
     $accountMatches = $this->database->query('select * from ' . self::$accountsTableName . ' where binary id=?', array($id));
     
@@ -101,6 +137,11 @@ class AccountRegister implements IAccountRegisterDAO, IAccountInfo {
     return $this->getAccountInstance($accountMatches[0]);
   }
 
+  /**
+   * Returns a collection of all accounts.
+   * @todo Implement this.
+   * @throws NotImplementedException
+   */
   public function getAccounts() : array {
     throw new NotImplementedException();
   }

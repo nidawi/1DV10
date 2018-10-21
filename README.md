@@ -19,4 +19,7 @@ values that are stored in the session in order to be preserved after a redirect.
 to do with the view being able to store values such as this. All "magic indices" are stored in the environments file to prevent hidden dependencies.
 
 ## HTML on Github?!
-I have noticed that while Github formats PHP just fine, it does not do quite as good of a job when it comes it HTML. The HTML text sometimes gets tossed around and horrifically disfigured. I have not found a solution for this issue and I hope it won't be too much of an issue.
+I have noticed that while Github formats PHP just fine, it does not do quite as good of a job when it comes it HTML. The HTML text sometimes gets tossed around and horrifically disfigured. I have not found a solution for this issue and I hope it won't be too much of an issue. Update: apparently comments are messed up too.
+
+## What's a "ViewTemplate" anyway?
+Simply put, the ViewTemplate.php file represents a base class that all other views implement (they don't have to). It contains various helper functions (such as verifying request headers, etc.) and manages the locals used by that particular view (by being given a reference to the SessionStorage). This was done to reduce code duplication and eliminate string dependencies. Coupling should remain roughly the same, as in most cases the coupling gained from extending this base class would have been replaced by some kind of navigation view keeping track of the same values instead.

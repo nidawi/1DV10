@@ -12,7 +12,6 @@ abstract class ViewTemplate {
 
   private static $registerLink = "register";
   private static $forumLink = "forum";
-
   private static $usernameLocalId = "USERNAME";
   private static $displayMessageLocalId = "MESSAGE";
 
@@ -20,7 +19,7 @@ abstract class ViewTemplate {
     $this->session = $session;
   }
 
-  public function userWantsToRegister() : bool {
+  public function userWantsToViewRegistration() : bool {
     return $this->isRequestGETHeaderPresent(self::$registerLink);
   }
   public function userWantsToViewForum() : bool {

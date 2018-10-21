@@ -2,7 +2,7 @@
 
 namespace Login\model;
 
-interface IAccountRegisterDAO {
+interface AccountRegisterDAO {
 
   function isAccountCreated(string $username) : bool;
 

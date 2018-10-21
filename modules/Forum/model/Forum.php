@@ -11,14 +11,14 @@ require_once 'Post.php';
 // This facade controller can be substituted for another implementation.
 class Forum implements ForumDAO {
 
-  // I feel all methods here are self-explanatory.
+  // I feel most of these methods here are pretty self-explanatory.
   private $database;
   private $register;
 
   private static $threadsTableName = "threads";
   private static $postsTableName = "posts";
 
-  public function __construct(\lib\Database $db, \Login\model\IAccountInfo $accountRegister) {
+  public function __construct(\lib\Database $db, \Login\model\AccountInfo $accountRegister) {
     $this->database = $db;
     $this->register = $accountRegister;
   }
@@ -48,6 +48,10 @@ class Forum implements ForumDAO {
     $this->database->query('insert into ' . self::$postsTableName . ' (thread, creator, body) values (?, ?, ?)', $argsArr);
   }
 
+  /**
+   * Fetches and returns an array containing all threads being stored, as Thread objects.
+   * @todo Paging should be implemented for future scalability.
+   */
   public function getThreads() : array {
     $threads = array();
 

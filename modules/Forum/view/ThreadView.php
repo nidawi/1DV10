@@ -17,7 +17,9 @@ class ThreadView extends \Login\view\ViewTemplate {
   private static $threadEdit = "ThreadView::EditThread";
   private static $threadDelete = "ThreadView::DeleteThread";
 
-  public function __construct(ForumLayout $fl, \lib\SessionStorage $session, \Login\model\AccountManager $accountManager) {
+  public function __construct(ForumLayout $fl,
+      \lib\SessionStorage $session,
+      \Login\model\AccountManager $accountManager) {
     parent::__construct($session);
     $this->forumLayout = $fl;
     $this->session = $session;
@@ -88,7 +90,8 @@ class ThreadView extends \Login\view\ViewTemplate {
   }
 
   private function generateAuthorText() : string {
-    return $this->threadToDisplay->getCreatorUsername() . ' on ' . $this->forumLayout->getDateString($this->threadToDisplay->getCreatedAt());
+    $createdAt = $this->forumLayout->getDateString($this->threadToDisplay->getCreatedAt());
+    return $this->threadToDisplay->getCreatorUsername() . ' on ' . $createdAt;
   }
 
   private function generateThreadToolsMenuHTML() : string {

@@ -24,7 +24,7 @@ class ApplicationController {
   private $forumController;
 
   public function __construct(\lib\SessionStorage $sessionStorage,
-      \Login\model\IAccountRegisterDAO $register,
+      \Login\model\AccountRegisterDAO $register,
       \Forum\model\ForumDAO $forum,
       \Login\model\AccountManager $accountManager) {
     $this->createViews($sessionStorage, $accountManager);
@@ -37,7 +37,7 @@ class ApplicationController {
   public function run() {
     try {
 
-      if ($this->layoutView->userWantsToRegister())
+      if ($this->layoutView->userWantsToViewRegistration())
         $this->registerController->doRegister();
       else if ($this->layoutView->userWantsToViewForum())
         $this->forumController->doForumInteractions();
@@ -54,7 +54,7 @@ class ApplicationController {
   }
 
   private function createControllers(\lib\SessionStorage $storage,
-      \Login\model\IAccountRegisterDAO $register,
+      \Login\model\AccountRegisterDAO $register,
       \Forum\model\ForumDAO $forum,
       \Login\model\AccountManager $accountManager) {
     $this->loginController = new \Login\controller\LoginController($this->layoutView, $register, $accountManager, $storage);

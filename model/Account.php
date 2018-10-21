@@ -43,7 +43,9 @@ class Account {
     return $this->username;
   }
   public function getTemporaryPassword() : string {
-    return $this->hasTemporaryPassword() ? $this->tempPassword->getPassword() : '';
+    return $this->hasTemporaryPassword()
+      ? $this->tempPassword->getPassword()
+      : '';
   }
 
   public function isAdmin() : bool {
@@ -68,7 +70,6 @@ class Account {
   public function getCreatedAt() : int {
     return $this->createdAt;
   }
-
   public function getUpdatedAt() : int {
     return $this->updatedAt;
   }

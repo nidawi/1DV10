@@ -47,6 +47,9 @@ class ForumLayout extends \Login\view\ViewTemplate {
     return $this->getPostPath() . '=' . $id;
   }
 
+  /**
+   * Uniform date format for the forum module.
+   */
   public function getDateString(int $time) : string {
     // Uniform forum date format that can be changed in one place.
     return date("F jS, Y, g:i a", $time);
@@ -68,10 +71,12 @@ class ForumLayout extends \Login\view\ViewTemplate {
   }
 
   private function generateLoggedInAsHTML() : string {
-    $username = $this->accountManager->getLoggedInAccount()->getUsername();
-    return $this->accountManager->isLoggedIn()
-      ? 'Logged in as ' . $username . ' (' . $this->getAccountType() . ')'
-      : 'Not logged in.';
+    if ($this->accountManager->isLoggedIn()) {
+      $username = $this->accountManager->getLoggedInAccount()->getUsername();
+      return 'Logged in as ' . $username . ' (' . $this->getAccountType() . ')';
+    }
+    else
+      return 'Not logged in.';
   }
 
   private function getAccountType() : string {

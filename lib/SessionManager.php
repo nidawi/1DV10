@@ -18,7 +18,7 @@ class SessionManager {
   }
 
   /**
-   * Gets the session that's associated to the current client.
+   * Gets the session that's associated with the current client.
    */
   public function getSession(string $key) : SessionStorage {
     return new \lib\SessionStorage($key);
