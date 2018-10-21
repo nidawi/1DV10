@@ -1,6 +1,8 @@
 <?php
 
-namespace Login\controller;
+namespace Registration\controller;
+
+require_once 'modules/Registration/view/RegisterView.php';
 
 class RegisterController {
 
@@ -13,13 +15,12 @@ class RegisterController {
       \Login\model\AccountRegisterDAO $register,
       \lib\SessionStorage $session) {
     $this->layoutView = $lv;
-    $this->registerView = new \Login\view\RegisterView($session);
+    $this->registerView = new \Registration\view\RegisterView($session);
     $this->accountRegister = $register;
   }
 
   /**
-   * Deals with registration requests and delegates
-   * work to the appropriate handlers.
+   * Deals with registration requests and delegates work to the appropriate handlers.
    */
   public function doRegister() {
     if ($this->registerView->userWantsToRegisterNewAccount())

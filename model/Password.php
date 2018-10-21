@@ -15,6 +15,7 @@ class Password {
   public function getPassword() : string {
     return $this->password;
   }
+  
   public function setPassword(string $password) {
     $this->verifyLength($password);
     $this->password = $password;

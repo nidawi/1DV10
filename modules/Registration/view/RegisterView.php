@@ -1,8 +1,10 @@
 <?php
 
-namespace Login\view;
+namespace Registration\view;
 
-class RegisterView extends ViewTemplate {
+require_once 'PasswordsDoNotMatchException.php';
+
+class RegisterView extends \Login\view\ViewTemplate {
 
 	private static $register = "RegisterView::Register";
   private static $username = "RegisterView::UserName";
@@ -150,7 +152,7 @@ class RegisterView extends ViewTemplate {
 				return "Username contains invalid characters.<br>";
 			case $err instanceof \Login\model\PasswordTooShortException:
 				return "Password has too few characters, at least " . $passwordMinLength . " characters.<br>";
-			case $err instanceof \Login\view\PasswordsDoNotMatchException:
+			case $err instanceof \Registration\view\PasswordsDoNotMatchException:
 				return "Passwords do not match.<br>";
 			default:
 			  return "Unknown error.<br>";

@@ -23,3 +23,7 @@ I have noticed that while Github formats PHP just fine, it does not do quite as 
 
 ## What's a "ViewTemplate" anyway?
 Simply put, the ViewTemplate.php file represents a base class that all other views implement (they don't have to). It contains various helper functions (such as verifying request headers, etc.) and manages the locals used by that particular view (by being given a reference to the SessionStorage). This was done to reduce code duplication and eliminate string dependencies. Coupling should remain roughly the same, as in most cases the coupling gained from extending this base class would have been replaced by some kind of navigation view keeping track of the same values instead.
+
+## Class Diagram
+I threw together a class diagram, mostly to help myself keep track of what was going on as the codebase grew. I didn't exactly put in a lot of time in it, but I figured it might help as a basic idea so I will include it anyway. It only covers model/controller/lib interactions and does not deal with views.
+![Class diagram](https://1dv610.nidawi.me/login/docs/classdiagram.jpg)

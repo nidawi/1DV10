@@ -5,15 +5,11 @@ namespace Login\controller;
 // TODO: make all views prettier. If there's time. That is.
 require_once 'view/ViewTemplate.php';
 require_once 'view/TopMenuView.php';
-require_once 'view/LoginView.php';
-require_once 'view/RegisterView.php';
 require_once 'view/LayoutView.php';
 
-require_once 'view/ViewExceptions.php';
-
-require_once 'controller/LoginController.php';
-require_once 'controller/RegisterController.php';
-require_once __DIR__ . '/../modules/Forum/controller/ForumController.php';
+require_once 'LoginController.php';
+require_once 'modules/Registration/controller/RegisterController.php';
+require_once 'modules/Forum/controller/ForumController.php';
 
 class ApplicationController {
 
@@ -58,7 +54,7 @@ class ApplicationController {
       \Forum\model\ForumDAO $forum,
       \Login\model\AccountManager $accountManager) {
     $this->loginController = new \Login\controller\LoginController($this->layoutView, $register, $accountManager, $storage);
-    $this->registerController = new \Login\controller\RegisterController($this->layoutView, $register, $storage);
+    $this->registerController = new \Registration\controller\RegisterController($this->layoutView, $register, $storage);
     $this->forumController = new \Forum\controller\ForumController($this->layoutView, $storage, $forum, $accountManager);
   }
 }

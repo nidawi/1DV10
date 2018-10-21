@@ -50,7 +50,9 @@ class Forum implements ForumDAO {
 
   /**
    * Fetches and returns an array containing all threads being stored, as Thread objects.
+   * 
    * @todo Paging should be implemented for future scalability.
+   * @todo Implement ThreadCollection?
    */
   public function getThreads() : array {
     $threads = array();
@@ -71,6 +73,11 @@ class Forum implements ForumDAO {
     return $this->createThreadInstance($fetchedThread[0]);
   }
 
+  /**
+   * Fetches the posts belonging to the provided thread and returns them in an array.
+   * 
+   * @todo Implement PostCollection?
+   */
   public function getThreadPosts(Thread $thread) : array {
     // Todo: we need some kind of paging for when threads get loads of posts and this will be too resource inefficient
     $posts = array();

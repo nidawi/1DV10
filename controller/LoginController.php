@@ -2,6 +2,8 @@
 
 namespace Login\controller;
 
+require_once 'view/LoginView.php';
+
 class LoginController {
   
   private $accountManager;

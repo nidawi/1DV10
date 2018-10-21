@@ -17,6 +17,7 @@ class Username {
   public function getUsername() : string {
     return $this->username;
   }
+
   public function setUsername(string $username) {
     $this->verifyLength($username);    
     $this->verifyCharacters($username);
@@ -27,6 +28,7 @@ class Username {
     if (strlen($username) < self::USERNAME_MIN_LENGTH)
       throw new UsernameTooShortException();
   }
+  
   private function verifyCharacters(string $username) {
     if (!preg_match(self::$usernameValidityRegexp, $username))
       throw new UsernameContainsInvalidCharactersException();
