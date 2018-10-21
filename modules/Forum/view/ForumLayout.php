@@ -1,17 +1,17 @@
 <?php
 
-namespace Login\view;
+namespace Forum\view;
 
-class ForumLayout extends ViewTemplate {
+class ForumLayout extends \Login\view\ViewTemplate {
 
-  private $account;
+  private $accountManager;
   
   private static $threadLink = "thread";
   private static $postLink = "post";
 
-  public function __construct(\lib\SessionStorage $session, \Login\model\Account $account = null) {
+  public function __construct(\lib\SessionStorage $session, \Login\model\AccountManager $accountManager) {
     parent::__construct($session);
-    $this->account = $account;
+    $this->accountManager = $accountManager;
   }
 
   public function getThreadLink() : string {
@@ -19,6 +19,13 @@ class ForumLayout extends ViewTemplate {
   }
   public function getPostLink() : string {
     return self::$postLink;
+  }
+
+  public function getSpecificThreadLink(string $id) : string {
+    return $this->getForumLink() . '&' . $this->getThreadLink() . '=' . $id;
+  }
+  public function getSpecificPostLink(string $id) : string {
+    return $this->getForumLink() . '&' . $this->getPostLink() . '=' . $id;
   }
 
   public function getDateString(int $time) : string {
@@ -42,12 +49,12 @@ class ForumLayout extends ViewTemplate {
   }
 
   private function generateLoggedInAsHTML() : string {
-    return $this->account !== null ? 'Logged in as ' . $this->account->getUsername() . ' (' . $this->getAccountType() . ')'
+    return $this->accountManager->isLoggedIn() ? 'Logged in as ' . $this->accountManager->getLoggedInAccount()->getUsername() . ' (' . $this->getAccountType() . ')'
       : 'Not logged in.';
   }
 
   private function getAccountType() : string {
-    return $this->account->isAdmin() ? "admin" : "user";
+    return $this->accountManager->getLoggedInAccount()->isAdmin() ? "admin" : "user";
   }
 
   private function generateMenu() : string {
@@ -62,7 +69,7 @@ class ForumLayout extends ViewTemplate {
   }
 
   private function getNewThreadLink() : string {
-    return $this->account !== null ? '<li><a href="?' . $this->getPath(self::$threadLink) . '">New Thread</a></li>' : '';
+    return $this->accountManager->isLoggedIn() ? '<li><a href="?' . $this->getPath(self::$threadLink) . '">New Thread</a></li>' : '';
   }
 
   private function getPath(string $link) : string {

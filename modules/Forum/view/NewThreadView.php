@@ -1,8 +1,8 @@
 <?php
 
-namespace Login\view;
+namespace Forum\view;
 
-class NewThreadView extends ViewTemplate {
+class NewThreadView extends \Login\view\ViewTemplate {
 
   private $forumLayoutView;
 
@@ -28,19 +28,27 @@ class NewThreadView extends ViewTemplate {
     return $this->isRequestPOSTHeaderPresent(self::$newThread);
   }
 
-  public function getThread() : \Login\model\Thread {
-    return new \Login\model\Thread($this->getTitleString());
+  public function getThread() : \Forum\model\Thread {
+    return new \Forum\model\Thread($this->getTitleString());
   }
-  public function getThreadBodyPost() : \Login\model\Post {
-    return new \Login\model\Post($this->getBodyString());
+  public function getThreadBodyPost() : \Forum\model\Post {
+    return new \Forum\model\Post($this->getBodyString());
   }
 
+  /**
+	 * Signals that the thread creation was successful. This will notify the user,
+   * refresh the page, and destroy the call stack with die().
+	 */
   public function threadCreationSuccessful() {
     $this->setDisplayMessage('Thread posted.');
     $this->redirect('?' . $this->getForumLink(), true);
     die();
   }
 
+  /**
+	 * Signals that the thread creation was unsuccessful. This will notify the user
+   * of the issues, refresh the page, and destroy the call stack with die().
+	 */
   public function threadCreationFailed(\Exception $err) {
     $this->addLocal(self::$threadTitleLocal, $this->getTitleString());
     $this->addLocal(self::$threadBodyLocal, $this->getBodyString());
@@ -55,22 +63,25 @@ class NewThreadView extends ViewTemplate {
     ' . $this->generateForm() . '
     ';
   }
-
   private function getTitleString() : string {
     return $_POST[self::$threadTitle];
   }
-
   private function getBodyString() : string {
     return $_POST[self::$threadBody];
   }
 
   private function interpretExceptionToString(\Exception $err) : string {
     switch (true) {
-      case $err instanceof \Login\model\ThreadTitleTooLongException: return 'Thread title is too long. Maximum ' . \Login\model\Thread::TITLE_MAX_LENGTH . ' characters.';
-      case $err instanceof \Login\model\ThreadTitleTooShortException: return 'Thread title is too short. Minimum ' . \Login\model\Thread::TITLE_MIN_LENGTH . ' characters.';
-      case $err instanceof \Login\model\PostBodyTooLongException: return 'Thread body is too long. Maximum ' . \Login\model\Post::POST_MAX_LENGTH . ' characters.';
-      case $err instanceof \Login\model\PostBodyTooShortException: return 'Thread body is too short. Minimum ' . \Login\model\Post::POST_MIN_LENGTH . ' characters.';
-      default: "Unknown error";
+      case $err instanceof \Forum\model\ThreadTitleTooLongException:
+        return 'Thread title is too long. Maximum ' . \Forum\model\Thread::TITLE_MAX_LENGTH . ' characters.';
+      case $err instanceof \Forum\model\ThreadTitleTooShortException:
+        return 'Thread title is too short. Minimum ' . \Forum\model\Thread::TITLE_MIN_LENGTH . ' characters.';
+      case $err instanceof \Forum\model\PostBodyTooLongException:
+        return 'Thread body is too long. Maximum ' . \Forum\model\Post::POST_MAX_LENGTH . ' characters.';
+      case $err instanceof \Forum\model\PostBodyTooShortException:
+        return 'Thread body is too short. Minimum ' . \Forum\model\Post::POST_MIN_LENGTH . ' characters.';
+      default:
+        return "Unknown error";
     }
   }
 

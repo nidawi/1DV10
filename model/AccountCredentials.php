@@ -17,13 +17,22 @@ class AccountCredentials {
     $this->remember = $remember;
   }
 
+  /**
+   * Checks whether the user would like to be remebered.
+   */
   public function userWantsToBeRemembered() : bool {
     return $this->remember;
   }
 
+  /**
+   * Gets the username.
+   */
   public function getUsername() : string {
     return $this->username;
   }
+  /**
+   * Gets the password.
+   */
   public function getPassword() : string {
     return $this->password;
   }

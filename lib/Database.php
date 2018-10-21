@@ -31,7 +31,12 @@ class Database {
     $this->connect();
   }
 
-  public function isConnected() {
+  /**
+   * Checks whether a connection is currently open.
+   * This includes pinging the database to verify a connection.
+   * Returns true if there is a connection and false if there isn't.
+   */
+  public function isConnected() : bool {
     try {
       return (isset($this->mysqli) && $this->mysqli->ping()) ? true : false;
     } catch (\Exception $err) {

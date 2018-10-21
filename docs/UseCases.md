@@ -1,4 +1,4 @@
-# Additional requirements specification 2018
+# Additional Use Cases 2018
 
 # Status
 
@@ -11,16 +11,12 @@
 | UC9 Edit Thread   | NO          |
 | UC10 Make Post    | YES         |
 | UC11 Edit Post    | NO          |
-| UC12 Delete Post  | NO          |
+| UC12 Delete Post  | YES         |
 
 # UC5 Show Forum
 ## Main Scenario
  1. Starts when a user wants to view the forum.
  2. System presents a list of threads.
-
-## Alternate Scenarios
- * 2a. User wants to view a specific page of threads.
-   1. The system presents a list of threads that belong to the requested page.
 
 # UC6 View Thread
 ## Main Scenario
@@ -50,12 +46,18 @@
 
 # UC8 Delete Thread
 ## Preconditions
-  1. User is logged in.
-  2. User is either Admin or thread creator.
+ 1. User is logged in.
+ 2. User is either Admin or thread creator.
 
 ## Main Scenario
  1. Starts when a user wants to delete a thread.
  2. System deletes the thread and returns the user to the main forum view.
+
+## Alternate Scenario
+ * 2a. Thread does not exist
+   1. System presents an error view with information about the issue.
+ * 2b. User provided illegal thread identifier
+   1. System presents an error view with information about the issue.
 
 # UC9 Edit Thread
 TBA
@@ -80,4 +82,17 @@ TBA
 TBA
 
 # UC12 Delete Post
-TBA
+## Preconditions
+ 1. User is logged in.
+ 2. User is viewing a thread.
+ 3. User is either Admin or thread creator.
+
+## Main Scenario
+ 1. Starts when a user wants to delete a post.
+ 2. System deletes the thread and returns the user to the thread view.
+
+## Alternate Scenario
+ * 2a. Post does not exist
+   1. System presents an error view with information about the issue.
+ * 2b. User provided illegal post identifier
+   1. System presents an error view with information about the issue.

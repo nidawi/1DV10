@@ -17,10 +17,17 @@ class SessionManager {
     $this->start();
   }
 
+  /**
+   * Gets the session that's associated to the current client.
+   */
   public function getSession(string $key) : SessionStorage {
     return new \lib\SessionStorage($key);
   }
 
+  /**
+   * Verifies the integrity of the current session.
+   * Will replace the session with a valid one if the check fails.
+   */
   public function verifySessionIntegrity() {
     if (!$this->isValidSession()) {
       $this->end();

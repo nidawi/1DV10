@@ -1,8 +1,8 @@
 <?php
 
-namespace Login\view;
+namespace Forum\view;
 
-class ForumView extends ViewTemplate {
+class ForumView extends \Login\view\ViewTemplate {
 
   private $forumLayout;
   private $threadsToDisplay;
@@ -15,7 +15,7 @@ class ForumView extends ViewTemplate {
     $this->threadsToDisplay = array();
   }
 
-  public function displayThreads(array $threads) {
+  public function setThreadsToDisplay(array $threads) {
     $this->threadsToDisplay = $threads;
   }
 
@@ -54,7 +54,7 @@ class ForumView extends ViewTemplate {
     return $threadsHTML;
   }
 
-  private function generateThread(\Login\model\Thread $thread) : string {
+  private function generateThread(\Forum\model\Thread $thread) : string {
     return '
       <tr>
         <td>' . $this->getTitleString($thread) .'</td>
@@ -65,7 +65,7 @@ class ForumView extends ViewTemplate {
     ';
   }
 
-  private function getTitleString(\Login\model\Thread $thread) : string {
+  private function getTitleString(\Forum\model\Thread $thread) : string {
     $threadTitle = htmlspecialchars($thread->getTitle(), ENT_QUOTES, 'UTF-8');
     return '<a href="?' . $this->getForumLink() . '&' . $this->forumLayout->getThreadLink() . '=' . $thread->getId() . '">' . $threadTitle . '</a>';
   }

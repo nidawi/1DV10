@@ -122,8 +122,10 @@ abstract class ViewTemplate {
 
   protected function getDisplayMessage(bool $alsoClear = true) : string {
     $message = $this->session->loadEntry(self::$displayMessageLocalId);
-    if ($alsoClear) $this->clearDisplayMessage();
-    return isset($message) ? $message : "";
+    if ($alsoClear)
+      $this->clearDisplayMessage();
+    return
+      isset($message) ? $message : "";
   }
 
   protected function clearDisplayMessage() {
@@ -152,7 +154,8 @@ abstract class ViewTemplate {
 
   private function getLocals() : array {
     $locals = $this->session->loadEntry(\Login\ENV::SESSION_LOCALS_ID);
-    if (isset($locals)) return $locals;
+    if (isset($locals))
+      return $locals;
     
     return array();
   }

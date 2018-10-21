@@ -16,15 +16,10 @@ class Password {
     return $this->password;
   }
   public function setPassword(string $password) {
-    $this->verifyExistence($password);
     $this->verifyLength($password);
     $this->password = $password;
   }
   
-  private function verifyExistence(string $password) {
-    if (!isset($password))
-      throw new PasswordMissingException();
-  }
   private function verifyLength(string $password) {
     if (strlen($password) < self::PASSWORD_MIN_LENGTH)
       throw new PasswordTooShortException();

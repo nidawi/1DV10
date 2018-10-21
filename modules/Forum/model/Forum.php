@@ -1,7 +1,9 @@
 <?php
 
-namespace Login\model;
+namespace Forum\model;
 
+require_once 'ForumExceptions.php';
+require_once 'IForumDAO.php';
 require_once 'Thread.php';
 require_once 'Post.php';
 
@@ -15,12 +17,12 @@ class Forum implements IForumDAO {
   private static $threadsTableName = "threads";
   private static $postsTableName = "posts";
 
-  public function __construct(\lib\Database $db, IAccountInfo $accountRegister) {
+  public function __construct(\lib\Database $db, \Login\model\IAccountInfo $accountRegister) {
     $this->database = $db;
     $this->register = $accountRegister;
   }
 
-  public function createThread(Thread $thread, Post $body, Account $poster) {
+  public function createThread(Thread $thread, Post $body, \Login\model\Account $poster) {
     // todo: prevent duplicate posting
 
     if (!$thread->canPost())
@@ -33,7 +35,7 @@ class Forum implements IForumDAO {
 
     $this->createPost($body, $createdThread, $poster);
   }
-  public function createPost(Post $post, Thread $thread, Account $poster) {
+  public function createPost(Post $post, Thread $thread, \Login\model\Account $poster) {
     if (!$post->canCreate())
       throw new InvalidPostException();
     if (!$thread->canUpdate())
@@ -60,6 +62,7 @@ class Forum implements IForumDAO {
     return $this->createThreadInstance($fetchedThread[0]);
   }
   public function getThreadPosts(Thread $thread) : array {
+    // Todo: we need some kind of paging for when threads get loads of posts and this will be too resource inefficient
     $posts = array();
 
     $fetchedPosts = $this->database->query('select * from ' . self::$postsTableName . ' where thread=?', array($thread->getId()));
@@ -70,13 +73,19 @@ class Forum implements IForumDAO {
     return $posts;
   }
   public function getPost(string $id) : Post {
-    throw new NotImplementedException();
+    $fetchedPost = $this->database->query('select * from ' . self::$postsTableName . ' where id=?', array($id));
+    if (!isset($fetchedPost) || count($fetchedPost) !== 1)
+      throw new PostDoesNotExistException();
+    
+    return $this->createPostInstance($fetchedPost[0]);
   }
 
   public function updateThread(Thread $oldThread, Thread $newThread) {
+    // todo: implement this
     throw new NotImplementedException();
   }
   public function updatePost(Post $oldPost, Post $newPost) {
+    // todo: implement this
     throw new NotImplementedException();
   }
 
@@ -89,12 +98,21 @@ class Forum implements IForumDAO {
     $this->database->query('delete from ' . self::$threadsTableName . ' where id=?', array($thread->getId()));
   }
   public function deletePost(Post $post) {
-    throw new NotImplementedException();
+    if (!$post->canDelete())
+      throw new InvalidPostException();
+    if (!$this->postExists($post))
+      throw new PostDoesNotExistException();
+
+    $this->database->query('delete from ' . self::$postsTableName . ' where id=?', array($post->getId()));
   }
 
   private function threadExists(Thread $thread) : bool {
     $fetchedThread = $this->database->query('select * from ' . self::$threadsTableName . ' where id=?', array($thread->getId()));
     return count($fetchedThread) > 0;
+  }
+  private function postExists(Post $post) : bool {
+    $fetchedPost = $this->database->query('select * from ' . self::$postsTableName . ' where id=?', array($post->getId()));
+    return count($fetchedPost) > 0;
   }
 
   private function getLastInsertId() : string {
@@ -110,7 +128,7 @@ class Forum implements IForumDAO {
   }
 
   private function createPostInstance(array $rawPost) : Post {
-    $newPost = new Post($rawPost["body"], $rawPost["id"], $rawPost["createdat"], $rawPost["updatedat"], $rawPost["parent"]);
+    $newPost = new Post($rawPost["body"], $rawPost["id"], $rawPost["createdat"], $rawPost["updatedat"], $rawPost["thread"], $rawPost["parent"]);
     $newPost->setCreator($this->register->getAccountById($rawPost["creator"]));
     return $newPost;
   }

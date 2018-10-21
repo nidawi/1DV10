@@ -15,11 +15,11 @@ class LoginView extends ViewTemplate {
 
 	private static $LOCAL_KEEPLOGGEDIN_ID = "KEEPLOGGEDIN";
 
-	private $currentAccount;
+	private $accountManager;
 	
-	public function __construct(\Login\model\Account $account = null, \lib\SessionStorage $session) {
+	public function __construct(\Login\model\AccountManager $accountManager, \lib\SessionStorage $session) {
 		parent::__construct($session);
-		$this->currentAccount = $account;
+		$this->accountManager = $accountManager;
 	}
 
 	public function userWantsToLogin() : bool {
@@ -37,8 +37,8 @@ class LoginView extends ViewTemplate {
 	 * Signals that the login was successful. This will complete view-related
 	 * activities, refresh the page, and destroy the call stack with die().
 	 */
-	public function loginSuccessful(\Login\model\Account $account) {
-		$this->rememberUser($account);
+	public function loginSuccessful() {
+		$this->rememberUser();
 		$this->clearState();
 		$this->displayLoginMessage();
 		$this->end();
@@ -66,11 +66,10 @@ class LoginView extends ViewTemplate {
 	}
 
 	public function getHTML() : string {
-		return ($this->currentAccount !== null) ? $this->generateLogoutButtonHTML() : $this->generateLoginFormHTML();
+		return $this->accountManager->isLoggedIn() ? $this->generateLogoutButtonHTML() : $this->generateLoginFormHTML();
 	}
 
-	private function rememberUser(\Login\model\Account $account) {
-		$this->currentAccount = $account;
+	private function rememberUser() {
 		if ($this->userWantsToBeRemembered())
 			$this->setCookies();
 	}
@@ -88,11 +87,9 @@ class LoginView extends ViewTemplate {
 		else
 		  $this->setDisplayMessage("Welcome" . ($this->isToRemainLoggedIn() ? " and you will be remembered" : ""));
 	}
-
 	private function displayLogoutMessage() {
 		$this->setDisplayMessage("Bye bye!");
 	}
-
 	private function displayError(\Exception $err) {
 		$this->setDisplayMessage($this->interpretException($err));
 	}
@@ -175,8 +172,8 @@ class LoginView extends ViewTemplate {
 		}
 	}
 	private function setCookies() {
-		$usernameCookie = new \lib\Cookie(self::$cookieName, $this->currentAccount->getUsername());
-		$passwordCookie = new \lib\Cookie(self::$cookiePassword, $this->currentAccount->getTemporaryPassword());
+		$usernameCookie = new \lib\Cookie(self::$cookieName, $this->accountManager->getLoggedInAccount()->getUsername());
+		$passwordCookie = new \lib\Cookie(self::$cookiePassword, $this->accountManager->getLoggedInAccount()->getTemporaryPassword());
 
 		$usernameCookie->set();
 		// $passwordCookie->encrypt(\Login\ENV::$cookieEncryptionKey);

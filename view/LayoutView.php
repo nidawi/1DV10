@@ -8,12 +8,14 @@ namespace Login\view;
 class LayoutView extends ViewTemplate {
 
   private $topMenu;
-  private $loggedOnAccount;
+  private $accountManager;
 
-  public function __construct(\lib\SessionStorage $session, \Login\model\Account $account = null) {
+  public function __construct(\lib\SessionStorage $session, \Login\model\AccountManager $accountManager) {
     parent::__construct($session);
-    $this->loggedOnAccount = $account;
+
+    $this->accountManager = $accountManager;
     $this->topMenu = new \view\TopMenuView();
+
     if (!$this->isValidRequestMethod())
       $this->userAttemptedUnallowedMethod();
   }
@@ -63,7 +65,7 @@ class LayoutView extends ViewTemplate {
       case 400: return "Bad Request";
       case 401: return "Unauthorized";
       case 403: return "Forbidden";
-      case 404: return "Requested resource does not exist";
+      case 404: return "Not Found";
       case 405: return "Method not allowed";
       case 500: default: return "Internal Server Error";
     }
@@ -103,7 +105,7 @@ class LayoutView extends ViewTemplate {
   }
 
   private function generateRegisterLink() : string {
-    $registerLink = ($this->userWantsToRegister()) ? '<a href="?">Back to login</a>' : ($this->isLoggedIn() ? '' : '<a href="?' . $this->getRegisterLink() . '">Register a new user</a>');
+    $registerLink = ($this->userWantsToRegister()) ? '<a href="?">Back to login</a>' : ($this->accountManager->isLoggedIn() ? '' : '<a href="?' . $this->getRegisterLink() . '">Register a new user</a>');
     return strlen($registerLink) > 0 ? $this->addListTags($registerLink) : '';
   }
 
@@ -113,7 +115,7 @@ class LayoutView extends ViewTemplate {
   }
 
   private function generateLoginStatus() : string {
-    return $this->isLoggedIn() ? '<h2>Logged in</h2>' : '<h2>Not logged in</h2>';
+    return $this->accountManager->isLoggedIn() ? '<h2>Logged in</h2>' : '<h2>Not logged in</h2>';
   }
 
   private function appendFooter() : string {
@@ -125,9 +127,5 @@ class LayoutView extends ViewTemplate {
 
   private function addListTags(string $element) : string {
     return '<li>' . $element . '</li>';
-  }
-
-  private function isLoggedIn() : bool {
-    return $this->loggedOnAccount !== null;
   }
 }

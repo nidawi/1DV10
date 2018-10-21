@@ -1,6 +1,6 @@
 <?php
 
-namespace Login\model;
+namespace Forum\model;
 
 class Thread {
 
@@ -38,7 +38,7 @@ class Thread {
 
     $this->title = $title;
   }
-  public function setCreator(Account $creator) {
+  public function setCreator(\Login\model\Account $creator) {
     $this->creator = $creator;
   }
   public function setPosts(array $posts) {
@@ -76,10 +76,13 @@ class Thread {
     return strtotime($this->updatedAt);
   }
 
-  public function isAccountThreadCreator(Account $account) : bool {
+  public function isPostIdThreadBody(int $id) : bool {
+    return $this->getBody()->getId() === $id;
+  }
+  public function isAccountThreadCreator(\Login\model\Account $account) : bool {
     return $account->getId() === $this->getCreatorId();
   }
-  public function canAccountEditThread(Account $account) : bool {
+  public function canAccountEditThread(\Login\model\Account $account) : bool {
     return $account->isAdmin() || $this->isAccountThreadCreator($account);
   }
 

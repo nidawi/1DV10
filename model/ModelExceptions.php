@@ -13,17 +13,7 @@ class PasswordMissingException extends \Exception {}
 class InvalidCredentialsException extends \Exception {}
 class TemporaryPasswordExpiredException extends \Exception {}
 class TemporaryPasswordDoesNotExistException extends \Exception {}
+class NoAccountLoggedInException extends \Exception {}
 
 // General Exceptions
 class NotImplementedException extends \Exception {}
-
-// Forum Exceptions
-class ThreadTitleTooShortException extends \Exception {}
-class ThreadTitleTooLongException extends \Exception {}
-class ThreadDoesNotExistException extends \Exception {}
-class PostBodyTooShortException extends \Exception {}
-class PostBodyTooLongException extends \Exception {}
-class PostDoesNotExistException extends \Exception {}
-class InvalidPostException extends \Exception {}
-class InvalidThreadException extends \Exception {}
-class ThreadHasNoPostsException extends \Exception {}

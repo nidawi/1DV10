@@ -6,27 +6,25 @@ class LoginController {
   
   private $layoutView;
   private $loginView;
-  private $currentAccount;
+  private $accountManager;
   private $accountRegister;
-  private $session;
 
   public function __construct(\Login\view\LayoutView $lv,
       \Login\model\IAccountInfo $register,
-      \Login\model\Account $account = null,
+      \Login\model\AccountManager $accountManager,
       \lib\SessionStorage $session) {
     $this->layoutView = $lv;
-    $this->session = $session;
-    $this->loginView = new \Login\view\LoginView($account, $session);
     $this->accountRegister = $register;
-    $this->currentAccount = $account;    
+    $this->accountManager = $accountManager;
+    $this->loginView = new \Login\view\LoginView($accountManager, $session);
   }
 
   public function doLogin() {
     // Perform a login sequence, taking whatever credentials are provided by the view.
-    if ($this->loginView->userWantsToLogin() && !isset($this->currentAccount))
+    if ($this->loginView->userWantsToLogin() && !$this->accountManager->isLoggedIn())
       $this->attemptLogin();
 
-    if ($this->loginView->userWantsToLogout() && isset($this->currentAccount))
+    if ($this->loginView->userWantsToLogout() && $this->accountManager->isLoggedIn())
       $this->doLogout();
 
     $this->layoutView->echoHTML($this->loginView->getHTML());
@@ -34,31 +32,19 @@ class LoginController {
 
   private function attemptLogin() {
     try {
-      $this->attemptLoadingAccount();
-      $this->setLoggedInAccount($this->currentAccount);
-      $this->loginView->loginSuccessful($this->currentAccount);
+      $credentials = $this->loginView->getProvidedCredentials();
+      $account = $this->accountRegister->getAccountByCredentials($credentials);
+
+      $this->accountManager->setLoggedInAccount($account);
+      $this->loginView->loginSuccessful();
     } catch (\Exception $err) {
-      $this->unsetLoggedInAccount();
+      $this->accountManager->unsetLoggedInAccount();
       $this->loginView->loginUnsuccessful($err);
     }
   }
 
   private function doLogout() {
-    $this->unsetLoggedInAccount();
+    $this->accountManager->unsetLoggedInAccount();
     $this->loginView->logoutSuccessful();
-  }
-
-  private function attemptLoadingAccount() {
-    $credentials = $this->loginView->getProvidedCredentials();
-    $this->currentAccount = $this->accountRegister->getAccountByCredentials($credentials);
-  }
-
-  private function setLoggedInAccount(\Login\Model\Account $account) {
-    $this->session->saveEntry(\Login\ENV::SESSION_CURRENT_USER_ID, $account);
-  }
-
-  private function unsetLoggedInAccount() {
-    unset($this->currentAccount);
-    $this->session->deleteEntry(\Login\ENV::SESSION_CURRENT_USER_ID);
   }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace Login\model;
+namespace Forum\model;
 
 class Post {
 
@@ -19,11 +19,13 @@ class Post {
       int $id = null,
       string $createdAt = null,
       string $updatedAt = null,
+      int $thread = null,
       int $parent = null) {
     $this->setBody($body);
     $this->id = $id;
     $this->createdAt = $createdAt;
     $this->updatedAt = $updatedAt;
+    $this->thread = $thread;
     $this->parent = $parent;
   }
 
@@ -37,13 +39,19 @@ class Post {
 
     $this->body = $body;
   }
-  public function setCreator(Account $creator) {
+  public function setCreator(\Login\model\Account $creator) {
     $this->creator = $creator;
   }
   public function setThread(Thread $thread) {
     $this->thread = $thread;
   }
 
+  public function getId() : int {
+    return $this->id;
+  }
+  public function getThreadId() : int {
+    return $this->thread;
+  }
   public function getBody() : string {
     return $this->body;
   }
@@ -58,10 +66,10 @@ class Post {
     return strtotime($this->createdAt);
   }
 
-  public function isAccountPostCreator(Account $account) : bool {
+  public function isAccountPostCreator(\Login\model\Account $account) : bool {
     return $account->getId() === $this->getCreatorId();
   }
-  public function canAccountEditPost(Account $account) : bool {
+  public function canAccountEditPost(\Login\model\Account $account) : bool {
     return $account->isAdmin() || $this->isAccountPostCreator($account);
   }
 
@@ -70,5 +78,8 @@ class Post {
   }
   public function canUpdate() : bool {
     return !$this->canCreate();
+  }
+  public function canDelete() : bool {
+    return $this->canUpdate();
   }
 }
