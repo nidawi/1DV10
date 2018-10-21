@@ -26,4 +26,4 @@ I had some major issues grasping what exactly you wanted us to comment. On the o
 
 ## Class Diagram
 I threw together a class diagram, mostly to help myself keep track of what was going on as the codebase grew. I didn't exactly put in a lot of time in it, but I figured it might help as a basic idea so I will include it anyway. It only covers model/controller/lib interactions and does not deal with views. It's probably not entirely accurate but (!) it has made me realize that the coupling is actually a bit of a mess which I should look into. Sadly I am out of time for this assignment so... best of luck to me.
-![Class diagram](https://1dv610.nidawi.me/login/docs/classdiagram.jpg)
+![Class diagram](https://github.com/nidawi/1DV610-login/blob/master/docs/classdiagram.jpg)
