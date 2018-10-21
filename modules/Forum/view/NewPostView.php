@@ -14,13 +14,16 @@ class NewPostView extends \Login\view\ViewTemplate {
   private $accountManager;
   private $inheritedURL;
 
-  public function __construct(\lib\SessionStorage $session, \Login\model\AccountManager $accountManager, string $location) {
+  // TODO: refactor this. really ugly sending a string here.
+  public function __construct(\lib\SessionStorage $session,
+      \Login\model\AccountManager $accountManager,
+      string $location) {
     parent::__construct($session);
     $this->accountManager = $accountManager;
     $this->inheritedURL = $location;
   }
 
-  public function userWantsToMakeNewPost() : bool {
+  public function userWantsToCreateNewPost() : bool {
     return $this->isRequestPOSTHeaderPresent(self::$createPost);
   }
 
@@ -56,8 +59,10 @@ class NewPostView extends \Login\view\ViewTemplate {
     <div class="newPostContainer">
       <h3>Respond to thread</h3>
       <p id="' . self::$messageId . '">' . $this->getDisplayMessage() . '</p>
-      <form action="?' . $this->inheritedURL . '" method="post" enctype="multipart/form-data" id="' . self::$formId . '">
-        <textarea cols="50" rows="10" size="20" name="' . self::$postBody . '" id="' . self::$postBody . '" form="' . self::$formId . '">' . $postBody . '</textarea>
+      <form action="?' . $this->inheritedURL . '"
+        method="post" enctype="multipart/form-data" id="' . self::$formId . '">
+        <textarea cols="50" rows="10" size="20" name="' . self::$postBody . '"
+          id="' . self::$postBody . '" form="' . self::$formId . '">' . $postBody . '</textarea>
         <input type="submit" value="Post" name="' . self::$createPost .'">
       </form>
     </div>

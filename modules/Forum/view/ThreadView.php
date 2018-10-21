@@ -38,8 +38,8 @@ class ThreadView extends \Login\view\ViewTemplate {
   public function userWantsToEditThread() : bool {
     return $this->userWantsToViewThread() && $this->isRequestPOSTHeaderPresent(self::$threadEdit);
   }
-  public function userWantsToMakeNewPost() : bool {
-    return $this->userWantsToViewThread() && $this->newPostView->userWantsToMakeNewPost();
+  public function userWantsToCreateNewPost() : bool {
+    return $this->userWantsToViewThread() && $this->newPostView->userWantsToCreateNewPost();
   }
 
   public function getDesiredThreadId() : int {
@@ -59,9 +59,11 @@ class ThreadView extends \Login\view\ViewTemplate {
     $this->redirect('?' . $this->getForumLink(), true);
     die();
   }
+
   public function postCreationSuccessful() {
     $this->newPostView->postCreationSuccessful();
   }
+
   public function postCreationUnsuccessful(\Exception $err) {
     $this->newPostView->postCreationUnsuccessful($err);
   }
@@ -88,6 +90,7 @@ class ThreadView extends \Login\view\ViewTemplate {
   private function generateAuthorText() : string {
     return $this->threadToDisplay->getCreatorUsername() . ' on ' . $this->forumLayout->getDateString($this->threadToDisplay->getCreatedAt());
   }
+
   private function generateThreadToolsMenuHTML() : string {
     if ($this->accountManager->isLoggedIn() && $this->threadToDisplay->canAccountEditThread($this->accountManager->getLoggedInAccount())) {
       return '

@@ -20,11 +20,11 @@ class NewThreadView extends \Login\view\ViewTemplate {
     $this->forumLayoutView = $flv;
   }
 
-  public function userWantsToMakeNewThread() : bool {
+  public function userWantsToViewThreadCreation() : bool {
     return $this->hasEmptyQueryString($this->forumLayoutView->getThreadLink());
   }
 
-  public function isCreateNewThreadRequest() : bool {
+  public function userWantsToCreateNewThread() : bool {
     return $this->isRequestPOSTHeaderPresent(self::$newThread);
   }
 
@@ -86,23 +86,24 @@ class NewThreadView extends \Login\view\ViewTemplate {
   }
 
   private function generateForm() : string {
+    $threadTitle = $this->getLocal(self::$threadTitleLocal);
+    $threadBody = $this->getLocal(self::$threadBodyLocal);
+
     return '
-    <form action="?' . $this->getPath() . '" method="POST" enctype="multipart/form-data" id="' . self::$formId . '">
+    <form action="?' . $this->forumLayoutView->getThreadPath() . '" method="POST" enctype="multipart/form-data" id="' . self::$formId . '">
       <fieldset>
-				<p id="' . self::$messageId . '">' . $this->getDisplayMessage() . '</p>
-				<label for="' . self::$threadTitle . '" >Title :</label>
-				<input type="text" size="20" name="' . self::$threadTitle . '" id="' . self::$threadTitle . '" value="' . $this->getLocal(self::$threadTitleLocal) . '" />
-        <br/>
-        <label for="' . self::$threadBody . '" >Body :</label>
-        <textarea cols="50" rows="10" size="20" name="' . self::$threadBody . '" id="' . self::$threadBody . '" form="' . self::$formId . '">' . $this->getLocal(self::$threadBodyLocal) . '</textarea>
-				<br/>
-				<input id="submit" type="submit" name="' . self::$newThread . '"  value="Create" />
+      <p id="' . self::$messageId . '">' . $this->getDisplayMessage() . '</p>
+      <label for="' . self::$threadTitle . '" >Title :</label>
+      <input type="text" size="20" name="' . self::$threadTitle . '"
+        id="' . self::$threadTitle . '" value="' . $threadTitle . '" />
+      <br/>
+      <label for="' . self::$threadBody . '" >Body :</label>
+      <textarea cols="50" rows="10" size="20" name="' . self::$threadBody . '"
+        id="' . self::$threadBody . '" form="' . self::$formId . '">' . $threadBody . '</textarea>
+      <br/>
+      <input id="submit" type="submit" name="' . self::$newThread . '"  value="Create" />
       </fieldset>
     </form>
     ';
-  }
-
-  private function getPath() : string {
-    return $this->getForumLink() . '&' . $this->forumLayoutView->getThreadLink();
   }
 }

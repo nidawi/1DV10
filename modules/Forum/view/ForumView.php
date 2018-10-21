@@ -19,7 +19,7 @@ class ForumView extends \Login\view\ViewTemplate {
     $this->threadsToDisplay = $threads;
   }
 
-  public function getHTML(string $body = null) : string {
+  public function getHTML() : string {
     return $this->generateForum();
   }
 
@@ -60,17 +60,13 @@ class ForumView extends \Login\view\ViewTemplate {
         <td>' . $this->getTitleString($thread) .'</td>
         <td>' . count($thread->getPosts()) . '</td>
         <td>' . $thread->getCreatorUsername() . '</td>
-        <td>' . $this->getDateString($thread->getCreatedAt()) . '</td>
+        <td>' . $this->forumLayout->getDateString($thread->getCreatedAt()) . '</td>
       </tr>
     ';
   }
 
   private function getTitleString(\Forum\model\Thread $thread) : string {
     $threadTitle = htmlspecialchars($thread->getTitle(), ENT_QUOTES, 'UTF-8');
-    return '<a href="?' . $this->getForumLink() . '&' . $this->forumLayout->getThreadLink() . '=' . $thread->getId() . '">' . $threadTitle . '</a>';
-  }
-
-  private function getDateString(int $time) : string {
-    return date("F jS, Y, g:i a", $time);
+    return '<a href="?' . $this->forumLayout->getSpecificThreadLink($thread->getId()) . '">' . $threadTitle . '</a>';
   }
 }

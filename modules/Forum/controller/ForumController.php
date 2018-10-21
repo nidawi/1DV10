@@ -41,7 +41,7 @@ class ForumController {
    * This method will automatically delegate the request to the appropriate handler.
    */
   public function doForumInteractions() {
-    if ($this->newThreadView->userWantsToMakeNewThread())
+    if ($this->newThreadView->userWantsToViewThreadCreation())
       $this->doCreateNewThread();
     else if ($this->threadView->userWantsToViewThread())
       $this->doDisplayThread();
@@ -54,7 +54,7 @@ class ForumController {
   private function doCreateNewThread() {
     $this->assertUserLoggedIn();
 
-    if ($this->newThreadView->isCreateNewThreadRequest())
+    if ($this->newThreadView->userWantsToCreateNewThread())
       $this->attemptThreadCreation();
 
     $this->layoutView->echoHTML($this->forumLayoutView->getHTML($this->newThreadView->getHTML()));
@@ -82,7 +82,7 @@ class ForumController {
         $this->doDeleteThread($thread);
       else if ($this->threadView->userWantsToEditThread())
         $this->doEditThread($thread);
-      else if ($this->threadView->userWantsToMakeNewPost())
+      else if ($this->threadView->userWantsToCreateNewPost())
         $this->doCreateNewPost($thread);
   
       $this->layoutView->echoHTML($this->forumLayoutView->getHTML($this->threadView->getHTML()));

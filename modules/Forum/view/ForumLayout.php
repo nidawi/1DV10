@@ -21,11 +21,30 @@ class ForumLayout extends \Login\view\ViewTemplate {
     return self::$postLink;
   }
 
-  public function getSpecificThreadLink(string $id) : string {
-    return $this->getForumLink() . '&' . $this->getThreadLink() . '=' . $id;
+  /**
+   * Returns a link formatted to point at the thread base path.
+   */
+  public function getThreadPath() : string {
+    return $this->getForumLink() . '&' . $this->getThreadLink();
   }
+  /**
+   * Returns a link formatted to point at the post base path.
+   */
+  public function getPostPath() : string {
+    return $this->getForumLink() . '&' . $this->getPostLink();
+  }
+
+  /**
+   * Returns a link formatted to point at a thread with the given id.
+   */
+  public function getSpecificThreadLink(string $id) : string {
+    return $this->getThreadPath() . '=' . $id;
+  }
+  /**
+   * Returns a link formatted to point at a thread with the given id.
+   */
   public function getSpecificPostLink(string $id) : string {
-    return $this->getForumLink() . '&' . $this->getPostLink() . '=' . $id;
+    return $this->getPostPath() . '=' . $id;
   }
 
   public function getDateString(int $time) : string {
@@ -49,12 +68,16 @@ class ForumLayout extends \Login\view\ViewTemplate {
   }
 
   private function generateLoggedInAsHTML() : string {
-    return $this->accountManager->isLoggedIn() ? 'Logged in as ' . $this->accountManager->getLoggedInAccount()->getUsername() . ' (' . $this->getAccountType() . ')'
+    $username = $this->accountManager->getLoggedInAccount()->getUsername();
+    return $this->accountManager->isLoggedIn()
+      ? 'Logged in as ' . $username . ' (' . $this->getAccountType() . ')'
       : 'Not logged in.';
   }
 
   private function getAccountType() : string {
-    return $this->accountManager->getLoggedInAccount()->isAdmin() ? "admin" : "user";
+    return $this->accountManager->getLoggedInAccount()->isAdmin()
+      ? "admin"
+      : "user";
   }
 
   private function generateMenu() : string {
@@ -69,10 +92,8 @@ class ForumLayout extends \Login\view\ViewTemplate {
   }
 
   private function getNewThreadLink() : string {
-    return $this->accountManager->isLoggedIn() ? '<li><a href="?' . $this->getPath(self::$threadLink) . '">New Thread</a></li>' : '';
-  }
-
-  private function getPath(string $link) : string {
-    return $this->getForumLink() . '&' . $link;
+    return $this->accountManager->isLoggedIn()
+      ? '<li><a href="?' . $this->getThreadPath() . '">New Thread</a></li>'
+      : '';
   }
 }

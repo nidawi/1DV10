@@ -17,3 +17,6 @@ However, since I use the PRG-pattern to prevent duplicate POST requests, etc., I
 Because of this, my views depend on the session (lib/SessionStorage.php) for storing what I call "locals". These "locals" are the same as Node's Express' "locals" which are essentially
 values that are stored in the session in order to be preserved after a redirect. The use of the session has been abstracted in view/ViewTemplate.php. This is motivated by the fact that the model, to my understanding, has absolutely nothing
 to do with the view being able to store values such as this. All "magic indices" are stored in the environments file to prevent hidden dependencies.
+
+## HTML on Github?!
+I have noticed that while Github formats PHP just fine, it does not do quite as good of a job when it comes it HTML. The HTML text sometimes gets tossed around and horrifically disfigured. I have not found a solution for this issue and I hope it won't be too much of an issue.

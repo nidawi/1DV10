@@ -60,6 +60,7 @@ class Thread {
   public function getBody() : Post {
     if ($this->getPostCount() > 0)
       return $this->posts[0];
+
     throw new ThreadHasNoPostsException(); // Somehow the thread has no posts.
   }
   public function getPosts() : array {

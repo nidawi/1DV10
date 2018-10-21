@@ -15,7 +15,9 @@ class PostView extends \Login\view\ViewTemplate {
   private static $postBody = "PostView::PostBody";
   private static $formId = "PostView::Form";
 
-  public function __construct(ForumLayout $fl, \lib\SessionStorage $session, \Login\model\AccountManager $accountManager) {
+  public function __construct(ForumLayout $fl,
+      \lib\SessionStorage $session,
+      \Login\model\AccountManager $accountManager) {
     parent::__construct($session);
     $this->forumLayout = $fl;
     $this->accountManager = $accountManager;
@@ -70,9 +72,9 @@ class PostView extends \Login\view\ViewTemplate {
   }
 
   private function generatePostHeaderHTML() : string {
-    return $this->threadToDisplay->isPostIdThreadBody($this->postToDisplay->getId()) ?
-       "" :
-       $this->generatePostAuthorHTML() . ' ' . $this->generatePostToolsMenuHTML();
+    return $this->threadToDisplay->isPostIdThreadBody($this->postToDisplay->getId())
+      ? ""
+      : $this->generatePostAuthorHTML() . ' ' . $this->generatePostToolsMenuHTML();
   }
   private function generateViewPostHTML() : string {
     // Prevent XSS by encoding special chars such as injected <script>-tags etc.
@@ -85,7 +87,8 @@ class PostView extends \Login\view\ViewTemplate {
   private function generateEditPostHTML() : string {
     return '
     <form action="?' . $this->getPostLink() . '" method="post" enctype="multipart/form-data" id="' . self::$formId . '">
-      <textarea cols="50" rows="10" size="20" name="' . self::$postBody . '" id="' . self::$postBody . '" form="' . self::$formId . '">' . $this->postToDisplay->getBody() . '</textarea>
+      <textarea cols="50" rows="10" size="20" name="' . self::$postBody . '"
+        id="' . self::$postBody . '" form="' . self::$formId . '">' . $this->postToDisplay->getBody() . '</textarea>
       <input type="submit" value="Save" name="' . self::$postEdit .'">
     </form>
     ';
