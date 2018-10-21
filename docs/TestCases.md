@@ -20,6 +20,8 @@ A few additional tests were introduced to deal with the new Use Cases after the 
 | 6.2          | 6           | Success |
 | 6.3          | 6           | Success |
 | 6.4          | 6           | Success |
+| 6.5          | 6           | Success |
+| 6.6          | 6           | Success |
 | 7.1          | 7           | Success |
 | 7.2          | 7           | Success |
 | 7.3          | 7           | Success |
@@ -36,6 +38,9 @@ A few additional tests were introduced to deal with the new Use Cases after the 
 | 11.1         | 11          | -       |
 | 12.1         | 12          | Success |
 | 12.2         | 12          | Success |
+| 13.1         | 13          | Success |
+| 13.2         | 13          | Success |
+| 13.3         | 13          | Success |
 | API 1        | 7           | Success |
 | API 2        | 8           | Success |
 | API 3        | 8           | Success |
@@ -211,6 +216,42 @@ View a thread.
  
 ### Output
  1. Two buttons, "Edit" followed by "Delete" are displayed next to the opening post.
+
+### Result
+Test was a success.
+
+***
+
+## Test Case 6.5: View a thread that doesn't exist
+View a thread.
+
+### Input
+ 1. Navigate to site.
+ 2. Append "?forum&thread=847368034764380673408673" to the url in your browser.
+ 3. Press enter.
+ 
+### Output
+ 1. User is taken to the forum.
+ 2. The text "Not Logged In" is displayed.
+ 3. The text "Error: 404" is displayed, followed by "Not Found".
+
+### Result
+Test was a success.
+
+***
+
+## Test Case 6.6: View a thread using an invalid identifier
+View a thread.
+
+### Input
+ 1. Navigate to site.
+ 2. Append "?forum&thread=0" to the url in your browser.
+ 3. Press enter.
+ 
+### Output
+ 1. User is taken to the forum.
+ 2. The text "Not Logged In" is displayed.
+ 3. The text "Error: 400" is displayed, followed by "Bad Request".
 
 ### Result
 Test was a success.
@@ -515,6 +556,67 @@ Delete a post.
 ### Output
  1. The message "Post deleted." is displayed.
  2. The deleted post is no longer displayed in the list of posts.
+
+### Result
+Test was a success.
+
+***
+
+## Test Case 13.1: View a Post
+View a thread.
+
+### Pre-conditions
+ * There are one or more stored posts.
+
+### Input
+ 1. Navigate to site.
+ 2. Append "?forum&thread=id_of_post" to the url in your browser.
+    * Replace "id_of_post" with the post you wish to view.
+ 3. Press enter.
+ 
+### Output
+ 1. User is taken to the post view.
+ 2. The post's body as well as other relevant information (creator, date) is displayed.
+
+### Alternative Scenario
+ 2. a. The post is a thread body
+    1. Only the post body is displayed.
+
+### Result
+Test was a success.
+
+***
+
+## Test Case 13.2: View a post that doesn't exist
+View a post.
+
+### Input
+ 1. Navigate to site.
+ 2. Append "?forum&post=847368034764380673408673" to the url in your browser.
+ 3. Press enter.
+ 
+### Output
+ 1. User is taken to the forum.
+ 2. The text "Not Logged In" is displayed.
+ 3. The text "Error: 404" is displayed, followed by "Not Found".
+
+### Result
+Test was a success.
+
+***
+
+## Test Case 13.3: View a post using an invalid identifier
+View a post.
+
+### Input
+ 1. Navigate to site.
+ 2. Append "?forum&post=0" to the url in your browser.
+ 3. Press enter.
+ 
+### Output
+ 1. User is taken to the forum.
+ 2. The text "Not Logged In" is displayed.
+ 3. The text "Error: 400" is displayed, followed by "Bad Request".
 
 ### Result
 Test was a success.

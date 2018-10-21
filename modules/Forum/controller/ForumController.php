@@ -2,6 +2,7 @@
 
 namespace Forum\controller;
 
+require_once __DIR__ . '/../view/ViewExceptions.php';
 require_once __DIR__ . '/../view/ForumLayout.php';
 require_once __DIR__ . '/../view/ForumView.php';
 require_once __DIR__ . '/../view/PostView.php';

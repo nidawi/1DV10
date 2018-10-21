@@ -9,9 +9,10 @@
 | UC7 Create Thread | YES         |
 | UC8 Delete Thread | YES         |
 | UC9 Edit Thread   | NO          |
-| UC10 Make Post    | YES         |
+| UC10 Create Post  | YES         |
 | UC11 Edit Post    | NO          |
 | UC12 Delete Post  | YES         |
+| UC13 View Post    | WIP         |
 
 # UC5 Show Forum
 ## Main Scenario
@@ -62,7 +63,7 @@
 # UC9 Edit Thread
 TBA
 
-# UC10 Make Post
+# UC10 Create Post
 ## Preconditions
  1. User is logged in
  2. User is viewing a thread
@@ -90,6 +91,17 @@ TBA
 ## Main Scenario
  1. Starts when a user wants to delete a post.
  2. System deletes the thread and returns the user to the thread view.
+
+## Alternate Scenario
+ * 2a. Post does not exist
+   1. System presents an error view with information about the issue.
+ * 2b. User provided illegal post identifier
+   1. System presents an error view with information about the issue.
+
+# UC13 View Post
+## Main Scenario
+ 1. Starts when a user wants to view a specific post.
+ 2. System presents the post.
 
 ## Alternate Scenario
  * 2a. Post does not exist
