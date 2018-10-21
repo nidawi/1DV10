@@ -20,10 +20,16 @@ class NewThreadView extends \Login\view\ViewTemplate {
     $this->forumLayoutView = $flv;
   }
 
+  /**
+   * Returns true if the user would like to view the Thread Creation page.
+   */
   public function userWantsToViewThreadCreation() : bool {
     return $this->hasEmptyQueryString($this->forumLayoutView->getThreadLink());
   }
 
+  /**
+   * Returns true if the user has submitted a thread creation request.
+   */
   public function userWantsToCreateNewThread() : bool {
     return $this->isRequestPOSTHeaderPresent(self::$newThread);
   }
@@ -36,9 +42,9 @@ class NewThreadView extends \Login\view\ViewTemplate {
   }
 
   /**
-	 * Signals that the thread creation was successful. This will notify the user,
-   * refresh the page, and destroy the call stack with die().
-	 */
+   * Signals that the thread creation was successful. This will notify the user and redirect the client.
+   * WARNING: This will also kill the call stack by calling die().
+   */
   public function threadCreationSuccessful() {
     $this->setDisplayMessage('Thread posted.');
     $this->redirect('?' . $this->getForumLink(), true);
@@ -46,9 +52,9 @@ class NewThreadView extends \Login\view\ViewTemplate {
   }
 
   /**
-	 * Signals that the thread creation was unsuccessful. This will notify the user
-   * of the issues, refresh the page, and destroy the call stack with die().
-	 */
+   * Signals that the thread creation was unsuccessful. This will notify the user and refresh the page.
+   * WARNING: This will also kill the call stack by calling die().
+   */
   public function threadCreationFailed(\Exception $err) {
     $this->addLocal(self::$threadTitleLocal, $this->getTitleString());
     $this->addLocal(self::$threadBodyLocal, $this->getBodyString());

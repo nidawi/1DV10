@@ -28,12 +28,19 @@ class PostView extends \Login\view\ViewTemplate {
     $this->threadToDisplay = $thread;
   }
 
+  /**
+   * Returns true if the user has specified a post that they wish to view.
+   */
   public function userWantsToViewPost() : bool {
     return $this->hasQueryString($this->forumLayout->getPostLink()) && $this->getRequestPostId() !== "";
   }
+  /**
+   * Returns true if the user has requested post deletion.
+   */
   public function userWantsToDeletePost() : bool {
     return $this->userWantsToViewPost() && $this->isRequestPOSTHeaderPresent(self::$postDelete);
   }
+
   public function userWantsToEditPost() : bool {
     return $this->userWantsToViewPost() && $this->isRequestPOSTHeaderPresent(self::$postEdit);
   }
@@ -47,6 +54,10 @@ class PostView extends \Login\view\ViewTemplate {
       return $postId;
   }
 
+  /**
+   * Signals that the post deletion was successful. This will notify the user and redirect the client.
+   * WARNING: This will also kill the call stack by calling die().
+   */
   public function postDeletionSuccessful() {
     $this->setDisplayMessage("Post deleted.");
     $this->redirect('?' . $this->forumLayout->getSpecificThreadLink($this->threadToDisplay->getId()), true);
@@ -67,6 +78,7 @@ class PostView extends \Login\view\ViewTemplate {
   private function getPostLink() : string {
     return $this->forumLayout->getSpecificPostLink($this->getRequestPostId());
   }
+
   private function getRequestPostId() : string {
     return $_GET[$this->forumLayout->getPostLink()] ?? $this->postToDisplay->getId();
   }
@@ -76,6 +88,7 @@ class PostView extends \Login\view\ViewTemplate {
       ? ""
       : $this->generatePostAuthorHTML() . ' ' . $this->generatePostToolsMenuHTML();
   }
+
   private function generateViewPostHTML() : string {
     // Prevent XSS by encoding special chars such as injected <script>-tags etc.
     $bodyHTMLEncoded = htmlspecialchars($this->postToDisplay->getbody(), ENT_QUOTES, 'UTF-8');
@@ -84,6 +97,7 @@ class PostView extends \Login\view\ViewTemplate {
 
     return $bodyWithNewlines;
   }
+
   private function generateEditPostHTML() : string {
     return '
     <form action="?' . $this->getPostLink() . '" method="post" enctype="multipart/form-data" id="' . self::$formId . '">
@@ -93,12 +107,14 @@ class PostView extends \Login\view\ViewTemplate {
     </form>
     ';
   }
+
   private function generatePostAuthorHTML() : string {
     $authorUsernameString = '<h2>' . $this->postToDisplay->getCreatorUsername() . '</h2>';
     $postTimestampString = '<h3> on ' . $this->forumLayout->getDateString($this->postToDisplay->getCreatedAt()) . '</h3>';
 
     return $authorUsernameString . $postTimestampString;
   }
+
   private function generatePostToolsMenuHTML() : string {
     if ($this->accountManager->isLoggedIn() && $this->postToDisplay->canAccountEditPost($this->accountManager->getLoggedInAccount())) {
       return '

@@ -16,6 +16,7 @@ class ForumView extends \Login\view\ViewTemplate {
   }
 
   public function setThreadsToDisplay(array $threads) {
+    // todo: verify that the array actually contains threads?
     $this->threadsToDisplay = $threads;
   }
 

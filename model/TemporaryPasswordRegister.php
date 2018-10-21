@@ -14,11 +14,17 @@ class TemporaryPasswordRegister {
     $this->database = $database;
   }
 
+  /**
+   * Creates a temporary password for the provided account.
+   */
   public function createTemporaryPassword(Account $account) {
     $generatedPassword = TemporaryPassword::generateTemporaryPassword();
     $this->database->query('insert into ' . self::$temporaryPasswordsTableName . ' (password, owner) values (?, ?)', array($generatedPassword, $account->getId()));
   }
 
+  /**
+   * Deletes the account's temporary password (if there is one).
+   */
   public function deleteTemporaryPassword(Account $account) {
     $this->database->query('delete from ' . self::$temporaryPasswordsTableName . ' where owner=?', array($account->getId()));
   }

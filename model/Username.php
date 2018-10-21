@@ -5,8 +5,7 @@ namespace Login\model;
 class Username {
   
   const USERNAME_MIN_LENGTH = 3;
-
-  private static $usernameValidityRegexp = "/^\w+$/i";
+  const USERNAME_VALIDITY_REGEXP = "/^\w+$/i";
 
   private $username;
 
@@ -18,7 +17,7 @@ class Username {
     return $this->username;
   }
 
-  public function setUsername(string $username) {
+  private function setUsername(string $username) {
     $this->verifyLength($username);    
     $this->verifyCharacters($username);
     $this->username = $username;
@@ -28,9 +27,9 @@ class Username {
     if (strlen($username) < self::USERNAME_MIN_LENGTH)
       throw new UsernameTooShortException();
   }
-  
+
   private function verifyCharacters(string $username) {
-    if (!preg_match(self::$usernameValidityRegexp, $username))
+    if (!preg_match(self::USERNAME_VALIDITY_REGEXP, $username))
       throw new UsernameContainsInvalidCharactersException();
   }
 }

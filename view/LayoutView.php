@@ -20,21 +20,46 @@ class LayoutView extends ViewTemplate {
       $this->userAttemptedUnallowedMethod();
   }
 
+  /**
+   * Signals that the user made a bad request. This will notify the user and redirect the client.
+   * WARNING: This will also kill the call stack by calling die().
+   */
   public function userMadeBadRequest() {
     $this->errorOccured(400);
   }
+  /**
+   * Signals that the user is unauthorized. This will notify the user and redirect the client.
+   * WARNING: This will also kill the call stack by calling die().
+   */
   public function userIsUnauthorized() {
     $this->errorOccured(401);
   }
+  /**
+   * Signals that access is forbidden for the user. This will notify the user and redirect the client.
+   * WARNING: This will also kill the call stack by calling die().
+   */
   public function userAccessForbidden() {
     $this->errorOccured(403);
   }
+  /**
+   * Signals that the user tried to access an inexistant resource.
+   * This will notify the user and redirect the client.
+   * WARNING: This will also kill the call stack by calling die().
+   */
   public function userRequestsInexistantResource() {
     $this->errorOccured(404);
   }
+  /**
+   * Signals that the user attempted an unallowed method. This will notify the user and redirect the client.
+   * WARNING: This will also kill the call stack by calling die().
+   */
   public function userAttemptedUnallowedMethod() {
     $this->errorOccured(405);
   }
+  /**
+   * Signals that there has been an internal error. This will notify the user and redirect the client.
+   * WARNING: This will also kill the call stack by calling die().
+   */
   public function serverFailure() {
     $this->errorOccured(500);
   }

@@ -21,7 +21,7 @@ class LoginController {
     $this->accountManager = $accountManager;
     $this->loginView = new \Login\view\LoginView($accountManager, $sessionStorage);
   }
-
+  
   /**
    * This will automatically receive requests from the related view
    * and delegate them to the appropriate handler.

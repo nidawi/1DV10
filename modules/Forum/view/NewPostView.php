@@ -32,8 +32,8 @@ class NewPostView extends \Login\view\ViewTemplate {
   }
 
   /**
-   * Signals that the post creation was successful. This will complete view-related
-   * activities, refresh the page, and destroy the call stack with die().
+   * Signals that the post creation was successful. This will notify the user and redirect the client.
+   * WARNING: This will also kill the call stack by calling die().
    */
   public function postCreationSuccessful() {
     $this->setDisplayMessage("Posted new message.");
@@ -42,8 +42,8 @@ class NewPostView extends \Login\view\ViewTemplate {
   }
 
   /**
-   * Signals that the post creation was unsuccessful. This will notify the user
-   * of the issues, refresh the page, and destroy the call stack with die().
+   * Signals that the post creation was unsuccessful. This will notify the user and refresh the page.
+   * WARNING: This will also kill the call stack by calling die().
    */
   public function postCreationUnsuccessful(\Exception $err) {
     $this->addLocal(self::$postBodyLocal, $this->getBody());

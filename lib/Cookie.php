@@ -11,7 +11,6 @@ class Cookie {
 
   const COOKIE_EXPIRATION_TIME = (60 * 60 * 24 * 3); //Default cookie lifespan is 3 days.
   private static $defaultPath = "/";
-  private static $defaultEncryptionMethod = "AES-128-CBC";
 
   private $name;
   private $content;
@@ -73,7 +72,6 @@ class Cookie {
     return $this->content;
   }
 
-
   /**
    * Checks whether this cookie is currently set.
    */
@@ -103,32 +101,6 @@ class Cookie {
   public function unset() {
     if ($this->isSet())
       unset($_COOKIE[$this->name]);
-  }
-
-  /**
-   * Encrypts the content of this cookie using the provided key.
-   */
-  public function encrypt(string $key) {
-    // TODO: move encryption to a dedicated class to increase cohesion.
-    // Alternatively, switch to one-time passwords as those should be safer.
-    $iv = $this->generateIv();
-    $encrypted = openssl_encrypt($this->content, self::$defaultEncryptionMethod, $key, $options=OPENSSL_RAW_DATA, $iv);
-    $this->content = base64_encode($encrypted . $iv);
-  }
-  /**
-   * Decrypts the content of this cookie using the provided key.
-   */
-  public function decrypt(string $key) {
-    $decoded = base64_decode($this->content);
-    $iv = substr($decoded, - strlen($this->generateIv()));
-    $encrypted = substr($decoded, 0, strlen($iv));
-    $decrypted = openssl_decrypt($encrypted, self::$defaultEncryptionMethod, $key, $options=OPENSSL_RAW_DATA, $iv);
-    $this->content = $decrypted;
-  }
-
-  private function generateIv() {
-    $ivLength = openssl_cipher_iv_length(self::$defaultEncryptionMethod);
-    return openssl_random_pseudo_bytes($ivLength);
   }
 
   private function getExpirationTime() : int {

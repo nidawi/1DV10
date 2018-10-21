@@ -18,16 +18,16 @@ Mental checklist of Assignment 4 requirements.
 * Databases, files, super-global arrays($_GET, $_SESSION...) etc : _check_
 * No string dependencies (especially avoid on superglobal arrays) : _check_
 * Code has an architecture eg. MVC : _check_
-* Low coupling : _check, to some extent_
+* Low coupling : _check, I could probably have done a better job_
 * Information Expert : _check, as well as I could_
-* Law of Demeter : _check, but with exceptions_
+* Law of Demeter : _check, but with a few exceptions_
 
 ## Code is Clean.
 * Self explanatory code and well commented : _check (comments may be lacking)_
-* Code is readable, no commented out code, indentation on GitHub looks good : _check (github indention has a mind of its own)_
+* Code is readable, no commented out code, indentation on GitHub looks good : _check_
 * Meaningful names : _check_
 * Errors are handled well (Validation, Exceptions) : _check (I think)_
-* High and low abstraction levels are separated : _check (I think)_
+* High and low abstraction levels are separated : _check (I think, public: high, private: low - generally)_
 * Read like a newspaper : _check (constructor -> public -> private)_
 * Little code duplication : _check_
 

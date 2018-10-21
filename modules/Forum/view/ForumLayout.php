@@ -4,6 +4,8 @@ namespace Forum\view;
 
 class ForumLayout extends \Login\view\ViewTemplate {
 
+  // This view might have a bit too much responsbility, considering that it knows
+  // where pretty much everything is.
   private $accountManager;
   
   private static $threadLink = "thread";

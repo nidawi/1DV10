@@ -39,9 +39,11 @@ class Account {
   public function getId() : int {
     return $this->id;
   }
+
   public function getUsername() : string {
     return $this->username;
   }
+
   public function getTemporaryPassword() : string {
     return $this->hasTemporaryPassword()
       ? $this->tempPassword->getPassword()
@@ -51,14 +53,17 @@ class Account {
   public function isAdmin() : bool {
     return $this->type === self::ACCOUNT_TYPE_ADMIN;
   }
+
   public function isModerator() : bool {
     return $this->type === self::ACCOUNT_TYPE_MODERATOR;
   }
+
   public function isNormalUser() : bool {
     return !$this->isAdmin() && !$this->isModerator();
   }
 
   public function isPasswordMatch(string $passwordToCompare) : bool {
+    // I figured that information expert and law of demeter liked letting the account be responsible.
     if ($this->hasTemporaryPassword() && $this->tempPassword->isPasswordMatch($passwordToCompare)) {
       $this->tempPassword->assertValidity();
       return true;
@@ -70,6 +75,7 @@ class Account {
   public function getCreatedAt() : int {
     return $this->createdAt;
   }
+
   public function getUpdatedAt() : int {
     return $this->updatedAt;
   }

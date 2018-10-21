@@ -31,15 +31,24 @@ class ThreadView extends \Login\view\ViewTemplate {
     $this->threadToDisplay = $thread;
   }
   
+  /**
+   * Returns true if the user has specified a thread that they wish to view.
+   */
   public function userWantsToViewThread() : bool {
     return $this->hasQueryString($this->forumLayout->getThreadLink()) && $this->getThreadId() !== "";
   }
+  /**
+   * Returns true if the user has requested thread deletion.
+   */
   public function userWantsToDeleteThread() : bool {
     return $this->userWantsToViewThread() && $this->isRequestPOSTHeaderPresent(self::$threadDelete);
   }
   public function userWantsToEditThread() : bool {
     return $this->userWantsToViewThread() && $this->isRequestPOSTHeaderPresent(self::$threadEdit);
   }
+  /**
+   * Returns true if the user has requested a post creation.
+   */
   public function userWantsToCreateNewPost() : bool {
     return $this->userWantsToViewThread() && $this->newPostView->userWantsToCreateNewPost();
   }
@@ -52,20 +61,33 @@ class ThreadView extends \Login\view\ViewTemplate {
     else
       return $threadId;
   }
+
   public function getNewPost() : \Forum\model\Post {
     return $this->newPostView->getPost();
   }
 
+  /**
+   * Signals that the thread deletion was successful. This will notify the user and redirect the client.
+   * WARNING: This will also kill the call stack by calling die().
+   */
   public function threadDeletionSuccessful() {
     $this->setDisplayMessage('Thread deleted.');
     $this->redirect('?' . $this->getForumLink(), true);
     die();
   }
 
+  /**
+   * Signals that the post creation was successful. This will notify the user and redirect the client.
+   * WARNING: This will also kill the call stack by calling die().
+   */
   public function postCreationSuccessful() {
     $this->newPostView->postCreationSuccessful();
   }
 
+  /**
+   * Signals that the post creation was unsuccessful. This will notify the user and refresh the page.
+   * WARNING: This will also kill the call stack by calling die().
+   */
   public function postCreationUnsuccessful(\Exception $err) {
     $this->newPostView->postCreationUnsuccessful($err);
   }
@@ -82,9 +104,11 @@ class ThreadView extends \Login\view\ViewTemplate {
     ' . $this->newPostView->getHTML() . '
     ';
   }
+
   private function getThreadLink() : string {
     return $this->forumLayout->getSpecificThreadLink($this->getThreadId());
   }
+
   private function getThreadId() : string {
     return $_GET[$this->forumLayout->getThreadLink()] ?? '';
   }

@@ -7,7 +7,7 @@ require_once 'AccountRegisterDAO.php';
 require_once 'AccountInfo.php';
 
 /**
- * Is responsible for account management.
+ * A fascade responsible for account creation/deletion, etc.
  * Can be substituted for an altnerative implementation.
  */
 class AccountRegister implements AccountRegisterDAO, AccountInfo {
@@ -35,11 +35,6 @@ class AccountRegister implements AccountRegisterDAO, AccountInfo {
     }
   }
 
-  /**
-   * Attempts to create an account with the provided username and password.
-   * 
-   * @throws AccountAlreadyExistsException
-   */
   public function createAccount(\Login\model\Username $username, \Login\model\Password $password) {
     // This design ensures that resources are not spent on asking the database for username availability if the input is incorrect to begin with.
     // All business rules (see Username.php and Password.php) have to be satisfied before any database calls are made.
@@ -91,6 +86,8 @@ class AccountRegister implements AccountRegisterDAO, AccountInfo {
    * @throws InvalidCredentialsException
    */
   public function getAccountByCredentials(AccountCredentials $credentials) : Account {
+    // This definitely does more than "one thing". Although that is "by design".
+    // Does that work for you, Martin?
     $account = $this->getAccountByUsername($credentials->getUsername());
 
     if ($account->isPasswordMatch($credentials->getPassword())) {

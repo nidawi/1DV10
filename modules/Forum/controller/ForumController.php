@@ -37,8 +37,7 @@ class ForumController {
   }
 
   /**
-   * This will automatically receive requests from the related views
-   * and delegate them to the appropriate handler.
+   * This will automatically receive requests from the related views and delegate them to the appropriate handler.
    */
   public function doForumInteractions() {
     if ($this->newThreadView->userWantsToViewThreadCreation())
