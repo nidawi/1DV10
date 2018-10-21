@@ -36,7 +36,6 @@ variables will, naturally, not be required.
 | SESSION_CURRENT_USER_ID    | string | The Id to use for the Session entry where the currently logged in user will be stored.     |
 | SESSION_DISPLAY_MESSAGE_ID | string | The Id to use for the Session entry where the current display message will be stored.      |
 | SESSION_LOCALS_ID          | string | The Id to use for the Session entry where the application's "local values" will be stored. |
-| COOKIE_ENCRYPTION_KEY      | string | The encryption key to use for cookie encryption/decryption.                                |
 | DEFAULT_TIME_ZONE          | string | The time zone to use for the application. Default is "Europe/Stockholm".                   |
 | DATABASE_ADDRESS           | string | The address of the database to use.                                                        |
 | DATABASE_USER              | string | The name of the database user to use.                                                      |
